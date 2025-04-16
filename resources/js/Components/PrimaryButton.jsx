@@ -7,14 +7,20 @@ export default function PrimaryButton({
     return (
         <button
             {...props}
-            className={
-                `inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-gray-900 ${
-                    disabled && 'opacity-25'
-                } ` + className
-            }
             disabled={disabled}
+            className={
+                `relative overflow-hidden inline-flex items-center justify-center 
+                rounded-xl px-6 py-2 text-sm font-medium tracking-wide 
+                text-white transition duration-300 ease-in-out
+                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FF2D20] 
+                ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:scale-[1.02]'} ` + className
+            }
         >
-            {children}
+            {/* Fondo con imagen nube4 */}
+            <span className="absolute inset-0 z-0 bg-[url('/nube4.png')] bg-cover bg-center opacity-80 transition duration-300"></span>
+
+            {/* Texto en primer plano */}
+            <span className="relative z-10">{children}</span>
         </button>
     );
 }
