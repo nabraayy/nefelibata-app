@@ -14,7 +14,9 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
 
     return (
         <>
-            <Head title="Welcome" />
+            <Head title="Bienvenido">
+                <link rel="icon" type="image/png" href="/logo.png" sizes='64x64' />
+            </Head>
             {/* FONDO DE NUBES APLICADO AQUÍ */}
             <div
                 className="min-h-screen bg-cover bg-center text-black/50 dark:text-white/50"
@@ -57,11 +59,28 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                             </nav>
                         </header>
 
-                        {/* Aquí va el resto del contenido... */}
+                        
 
-                        <footer className="py-16 text-center text-sm text-black ">
-                            Laravel v{laravelVersion} (PHP v{phpVersion})
+                        <footer className="w-full py-10 px-6 text-black ">
+                            <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 w-full">
+                                {/* Logo y contacto */}
+                                <div className="flex items-center gap-4">
+                                    <img src="/logo.png" alt="Logo Nefelibata" className="h-10 w-auto" />
+                                    <div>
+                                        <h2 className="text-lg font-semibold">NEFELIBATA</h2>
+                                        <p className="text-sm">info@nefelibata.com</p>
+                                        <p className="text-sm">+34 123 458 789</p>
+                                    </div>
+                                </div>
+
+                                {/* Redes sociales */}
+                                <div className="flex items-center gap-4">
+                                    <img src='/logos1.png' alt='Logos Redes' className='h-20 w-auto' />
+                                </div>
+                            </div>
                         </footer>
+
+
                     </div>
                 </div>
             </div>
