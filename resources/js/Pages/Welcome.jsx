@@ -18,11 +18,11 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                 <link rel="icon" type="image/png" href="/logo.png" sizes='64x64' />
             </Head>
 
-            
+                
                 <div className="relative flex min-h-screen flex-col items-center justify-center selection:bg-[#FF2D20] ">
                     <div className="relative w-full max-w-2xl px-6 lg:max-w-7xl">
-                        <header className="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
-                            <div className="flex lg:col-start-2 lg:justify-center">
+                        <header className="grid grid-cols-2  gap-2 py-10 lg:grid-cols-3">
+                            <div className="flex lg:col-start-2 lg:justify-start lg:col-span-1">
                                 <img
                                     src="/logo.png"
                                     alt="Logo Nefelibata"
@@ -60,7 +60,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                             <div className="max-w-7xl mx-auto px-4 text-center">
                                 <h1 className="text-4xl md:text-6xl font-extrabold mb-4">IMPULSA TU NEGOCIO ONLINE 🌥️</h1>
                                 <a
-                                    href="{{ route('register') }}"
+                                    href={ route('register') }
                                     className="bg-white text-indigo-600 font-semibold px-6 py-3 rounded-full shadow-lg hover:bg-indigo-100 transition"
                                     >
                                         ¡Únete ahora!
@@ -127,21 +127,22 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                     <div>
                                         <h3 className="text-xl font-semibold mb-4">Nuestra Oficina</h3>
                                         <p className="mb-2">Calle Ejemplo 123</p>
-                                        <p className="mb-2">28000, Madrid, España</p>
+                                        <p className="mb-2"> AD500, Andorra La Vella</p>
                                         <p className="mb-2">Tel: +34 123 456 789</p>
-                                        <p>Email: contacto@nefelibata.com</p>
+                                        <p>Email: info@nefelibata.com</p>
                                     </div>
 
                                     {/* Mapa de Google */}
                                     <div className="rounded-xl overflow-hidden shadow-lg">
-                                        <iframe
-                                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3036.6186032227894!2d-3.703790684846052!3d40.416775979364376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd422887627ec4f5%3A0x4a2d82a96d90c787!2sMadrid!5e0!3m2!1ses!2ses!4v1615480707821!5m2!1ses!2ses"
-                                            width="100%"
-                                            height="300"
-                                            allowFullScreen=""
-                                            loading="lazy"
-                                            referrerPolicy="no-referrer-when-downgrade"
-                                        ></iframe>
+                                    <iframe
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d118640.5070630584!2d1.447290738079413!3d42.50779085019054!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12bc5a3f89991c3d%3A0x405cf6cbac3db94!2sAndorra%20la%20Vella!5e0!3m2!1ses!2ses!4v1615480707821!5m2!1ses!2ses"
+                                        width="100%"
+                                        height="300"
+                                        allowfullscreen=""
+                                        loading="lazy"
+                                        referrerpolicy="no-referrer-when-downgrade"
+                                    ></iframe>
+
                                     </div>
                                 </div>
                             </div>
@@ -171,11 +172,8 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                 </div>
                             </div>
                         </footer>
-
-
                     </div>
                 </div>
-            </div>
         </>
     );
 }
