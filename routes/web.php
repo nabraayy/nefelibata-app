@@ -25,6 +25,20 @@ Route::middleware('auth','verified')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
 });
+Route::get('/products', function () {
+    return Inertia::render('ProductPages/Products');
+})->name('products');
+
+Route::get('/contact', function () {
+    return Inertia::render('ContactPages/Contact');
+})->name('contact');
+Route::get('/cart', function () {
+    return Inertia::render('ProductPages/Cart');
+})->name('cart');
+Route::get('/checkout', function() {
+    return Inertia::render('CheckOutPages/Checkout');
+})->name('checkout');
+Route::get('/order-confirmed', fn() => Inertia::render('CheckOutPages/OrderConfirmed'))->name('order.confirmed');
 
 
 

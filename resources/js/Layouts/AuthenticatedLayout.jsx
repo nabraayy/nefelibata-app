@@ -35,24 +35,24 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
+                                    href={route('products')}
+                                    active={route().current('products')}
                                 >
                                     Productos
                                 </NavLink>
                             </div>
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
+                                    href={route('contact')}
+                                    active={route().current('contact')}
                                 >
                                     Contacto
                                 </NavLink>
                             </div>
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
+                                    href={route('cart')}
+                                    active={route().current('cart')}
                                     className="flex items-center gap-2"
                                 >
                                     <ShoppingCart className="w-5 h-5" />
