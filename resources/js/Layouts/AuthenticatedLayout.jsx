@@ -12,6 +12,8 @@ export default function AuthenticatedLayout({ header, children }) {
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
+       
+
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -59,6 +61,55 @@ export default function AuthenticatedLayout({ header, children }) {
                                     
                                 </NavLink>
                             </div>
+                            <div className="hidden sm:ms-10 sm:flex items-center relative group">
+                                {user.role === 'admin' && (
+                                    <div className="relative">
+                                        <button
+                                            className="text-gray-700 hover:text-black font-medium flex items-center gap-1"
+                                        >
+                                            Admin Panel
+                                            <svg
+                                                className="w-4 h-4"
+                                                fill="currentColor"
+                                                viewBox="0 0 20 20"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                    clipRule="evenodd"
+                                                />
+                                            </svg>
+                                        </button>
+
+                                        <div className="absolute left-0 mt-2 hidden group-hover:block bg-white border rounded-lg shadow-lg z-50 min-w-[180px]">
+                                            <NavLink
+                                                href={route('admin.dashboard')}
+                                                active={route().current('admin.dashboard')}
+                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                            >
+                                                Dashboard
+                                            </NavLink>
+                                            <NavLink
+                                                href={route('admin.orders')}
+                                                active={route().current('admin.orders')}
+                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                            >
+                                                Pedidos
+                                            </NavLink>
+                                            <NavLink
+                                                href={route('admin.messages')}
+                                                active={route().current('admin.messages')}
+                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                            >
+                                                Mensajes
+                                            </NavLink>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+
+
                         </div>
 
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">

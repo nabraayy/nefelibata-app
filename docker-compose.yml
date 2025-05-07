@@ -17,7 +17,7 @@ services:
 
   mysql:
     image: mysql:8.0
-    container_name: laravel_mysql
+    container_name: dbnefelibata-app
     restart: always
     environment:
       MYSQL_DATABASE: dbnefelibata-app

@@ -4,6 +4,11 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Middleware\IsAdmin;
+use App\Http\Controllers\AdminController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\CartController;
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -41,6 +46,16 @@ Route::get('/checkout', function() {
 Route::get('/order-confirmed', fn() => Inertia::render('CheckOutPages/OrderConfirmed'))->name('order.confirmed');
 
 
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', fn() => Inertia::render('Dashboard'))->name('dashboard');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
+    Route::get('/admin/messages', [AdminController::class, 'messages'])->name('admin.messages');
+});
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 
 
 require __DIR__.'/auth.php';

@@ -4,8 +4,15 @@ import './bootstrap';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+import { MantineProvider } from '@mantine/core';
+
+const appName = import.meta.env.VITE_APP_NAME || 'nefelibata';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -17,7 +24,11 @@ createInertiaApp({
     setup({ el, App, props }) {
         const root = createRoot(el);
 
-        root.render(<App {...props} />);
+        root.render(
+            <MantineProvider withGlobalStyles withNormalizeCSS>
+                <App {...props} />
+            </MantineProvider>
+        );
     },
     progress: {
         color: '#4B5563',

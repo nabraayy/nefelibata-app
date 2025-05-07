@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Http\Middleware\IsAdmin;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -36,11 +37,9 @@ class AuthenticatedSessionController extends Controller
     $user = Auth::user();
 
     // Redirigir según el rol
-    if ($user->role === 1) {
-        return redirect()->route('admin.dashboard');
-    } else {
-        return redirect()->route('dashboard');
-    }
+    return $user->role === 'admin'
+        ? redirect()->route('admin.dashboard')
+        : redirect()->route('dashboard');
 }
 
     /**

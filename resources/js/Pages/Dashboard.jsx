@@ -1,71 +1,128 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
+import { useState } from 'react';
+import Countdown from 'react-countdown';
 
 export default function Dashboard() {
     const user = usePage().props.auth.user;
+    const [darkMode, setDarkMode] = useState(false);
+
+    const toggleDarkMode = () => setDarkMode(!darkMode);
 
     return (
-        <AuthenticatedLayout>
-            <Head title="Inicio" />
+        <div className={darkMode ? 'dark' : ''}>
+            <AuthenticatedLayout>
+                <Head title="Inicio" />
 
-            <div className="min-h-screen bg-gray-50 py-10 px-6">
-                <div className="max-w-7xl mx-auto">
-                    <div className="bg-white rounded-3xl shadow p-8">
-                        {/* Header */}
-                        <div className="flex flex-col md:flex-row items-center justify-between mb-8">
-                            <div>
-                                <h1 className="text-3xl font-bold text-gray-800">Welcome, {user.name}</h1>
-                                <p className="text-gray-500">Manage your online store with ease.</p>
-                            </div>
-                            
-                        </div>
-
-                        {/* Products */}
-                        <div className="mb-8">
-                            <h2 className="text-xl font-semibold text-gray-800 mb-4">Products</h2>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                                {[
-                                    { name: 'T-shirt', price: '20.00', img: '/shirt.png' },
-                                    { name: 'Tote Bag', price: '15.00', img: '/bag.png' },
-                                    { name: 'Caffee Mug', price: '12.00', img: '/mug.png' },
-                                    { name: 'Sneakers', price: '35.00', img: '/shoes.png' },
-                                ].map((item, i) => (
-                                    <div key={i} className="bg-gray-100 rounded-xl p-4 text-center shadow hover:shadow-md transition">
-                                        <img src={item.img} alt={item.name} className="h-24 mx-auto mb-4 object-contain" />
-                                        <h3 className="font-semibold">{item.name}</h3>
-                                        <p className="text-sm text-gray-600">${item.price}</p>
-                                        <button className="mt-3 text-sm bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">Buy</button>
-                                    </div>
-                                ))}
-                            </div>
-
-                            <div className="flex flex-wrap gap-4 mt-6">
-                                <button className="border border-blue-600 text-blue-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-50">+ Add New Product</button>
-                                <button className="border border-blue-600 text-blue-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-50">View Orders</button>
-                                <button className="border border-blue-600 text-blue-600 px-4 py-2 rounded-lg text-sm hover:bg-blue-50">Manage Customers</button>
-                            </div>
-                        </div>
-
-                        {/* Analytics & Settings */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="bg-white border rounded-xl p-6 shadow-sm">
-                                <h3 className="font-semibold mb-4">Analytics</h3>
-                                <img src="/analytics.png" alt="Analytics" className="h-32 w-full object-cover rounded" />
-                                <button className="mt-4 px-4 py-2 border rounded-lg text-sm hover:bg-gray-100">View Analytics</button>
-                            </div>
-                            <div className="bg-white border rounded-xl p-6 shadow-sm">
-                                <h3 className="font-semibold mb-4">Store Settings</h3>
-                                <img src="/map.png" alt="Settings" className="h-32 w-full object-cover rounded" />
-                                <button className="mt-4 px-4 py-2 border rounded-lg text-sm hover:bg-gray-100">Manage Settings</button>
-                            </div>
-                        </div>
-                    </div>
+                {/* Dark mode toggle */}
+                <div className="flex justify-end px-6 py-2">
+                    <button
+                        onClick={toggleDarkMode}
+                        className="px-4 py-2 border rounded text-sm bg-gray-100 hover:bg-gray-200"
+                    >
+                        {darkMode ? 'Modo Claro' : 'Modo Oscuro'}
+                    </button>
                 </div>
 
-                {/* Footer */}
-                <footer className="mt-12 px-6 text-black">
-                    <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 w-full">
+                {/* Hero Section */}
+                <section className="w-full bg-cover bg-center text-white py-24 px-6 text-center relative" style={{ backgroundImage: "url('/nube4.png')" }}>
+                    <div className="bg-black bg-opacity-50 p-8 rounded-xl inline-block animate-fade-in">
+                        <h1 className="text-4xl sm:text-5xl font-extrabold mb-4">Tecnología que impulsa tus ideas</h1>
+                        <p className="text-lg sm:text-xl mb-6">Descubre nuestros productos exclusivos al mejor precio</p>
+                        <Link
+                            href={route('products')}
+                            className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition"
+                        >
+                            ¡Explora la tienda!
+                        </Link>
+                    </div>
+                </section>
+
+                {/* Flash Sale Countdown */}
+                <section className="bg-red-100 text-center py-6 px-4">
+                    <h2 className="text-xl font-semibold text-red-800 mb-2">⚡ Oferta Flash en portátiles</h2>
+                    <Countdown date={Date.now() + 3600 * 1000} renderer={({ hours, minutes, seconds }) => (
+                        <p className="text-lg font-bold text-red-600">Finaliza en: {hours}:{minutes}:{seconds}</p>
+                    )} />
+                </section>
+
+                {/* Ofertas */}
+                <section className="bg-yellow-100 py-12 px-6 text-center">
+                    <h2 className="text-3xl font-bold mb-4">🎉 ¡OFERTAS EXCLUSIVAS DE ESTA SEMANA!</h2>
+                    <p className="text-lg mb-6">Hasta un <span className="font-bold text-red-600">40% de descuento</span> en productos seleccionados.</p>
+                    <Link href={route('products')} className="bg-red-500 hover:bg-red-600 text-white font-medium px-5 py-3 rounded-lg">
+                        Ver ofertas ahora
+                    </Link>
+                </section>
+
+                {/* Producto destacado */}
+                <section className="py-12 px-6 bg-white text-center">
+                    <h2 className="text-2xl font-bold mb-4">🔥 Producto del día</h2>
+                    <div className="bg-gray-100 p-6 rounded-xl shadow inline-block">
+                        <img src="/portatil.png" alt="Producto del día" className="h-28 mx-auto mb-4" />
+                        <h3 className="text-lg font-semibold">Portátil ASUS Zen</h3>
+                        <p className="text-sm text-gray-700 mb-2">30% de descuento solo por hoy</p>
+                        <Link href={route('products')} className="text-blue-600 hover:underline text-sm">Ver más</Link>
+                    </div>
+                </section>
+
+                {/* Categorías */}
+                <section className="py-16 px-6 bg-white text-center animate-slide-up">
+                    <h2 className="text-3xl font-bold mb-8">Explora por Categoría</h2>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                        {[{ name: 'Portátiles', icon: '/portatil.png' }, 
+                            { name: 'Auriculares Gaming', icon: '/cascos/cascos1.webp' }, 
+                            { name: 'Pantallas', icon: '/panatalla/panatalla2.webp' }, 
+                            { name: 'Ratones', icon: '/raton/raton1.webp' },
+                            { name: 'Teclado', icon: ['/teclados/teclado1.png'] },
+                            { name: 'Tablet', icon: ['/tablet/tabl1.webp'] },
+                            { name: 'Base Refri', icon: ['/refri/base-refri1.webp'] },
+                            { name: 'Móvil', icon: ['/moviles/mo1.webp'] },
+                            { name: 'Auriculares', icon: ['/auriculares/auri1.webp'] },
+                            { name: 'Cargadores', icon: ['/cargador/cargador1.webp'] },
+                            { name: 'Baterias', icon: ['/bateria/bateria1.webp'] },
+
+
+                        ].map((cat, index) => (
+                            <div key={index} className="bg-gray-100 p-6 rounded-xl shadow hover:shadow-md transition text-center">
+                                <img src={cat.icon} alt={cat.name} className="h-20 mx-auto mb-4 object-contain" />
+                                <h3 className="font-semibold">{cat.name}</h3>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Opiniones */}
+                <section className="bg-gray-100 py-16 px-6 animate-fade-in">
+                    <h2 className="text-3xl font-bold text-center mb-8">Lo que opinan nuestros clientes</h2>
+                    <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-6 text-left">
+                        {["Entrega rápida y productos de alta calidad. ¡Volveré a comprar!", "Me encantó el diseño de la tienda y la atención al cliente. Muy recomendable.", "Los mejores precios del mercado. El portátil llegó en perfectas condiciones."].map((text, i) => (
+                            <div key={i} className="bg-white p-4 rounded-lg shadow">
+                                <p>"{text}"</p>
+                                <p className="mt-2 text-sm text-gray-500">- Cliente</p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Blog Tips */}
+                <section className="bg-white py-16 px-6 text-center">
+                    <h2 className="text-3xl font-bold mb-8">Consejos y Guías</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto text-left">
+                        {["Cómo elegir el portátil perfecto", "Guía para configurar tu espacio de trabajo en casa"].map((tip, i) => (
+                            <div key={i} className="bg-gray-50 p-6 rounded-xl shadow hover:shadow-md transition">
+                                <h3 className="text-xl font-semibold mb-2">{tip}</h3>
+                                <p className="text-gray-600 text-sm">Explora consejos prácticos para mejorar tu experiencia tecnológica diaria.</p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+               
+                <footer className="mt-12 px-4 sm:px-6 lg:px-12 xl:px-24 text-black w-full">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-6 w-full">
                         <div className="flex items-center gap-4">
                             <img src="/logo.png" alt="Logo Nefelibata" className="h-10 w-auto" />
                             <div>
@@ -75,11 +132,11 @@ export default function Dashboard() {
                             </div>
                         </div>
                         <div className="flex items-center gap-4">
-                            <img src='/logos1.png' alt='Redes' className='h-20 w-auto' />
+                            <img src="/logos1.png" alt="Redes" className="h-20 w-auto" />
                         </div>
                     </div>
                 </footer>
-            </div>
-        </AuthenticatedLayout>
+            </AuthenticatedLayout>
+        </div>
     );
 }
