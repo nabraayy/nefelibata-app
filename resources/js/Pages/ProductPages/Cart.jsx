@@ -1,57 +1,30 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import { usePage } from '@inertiajs/react';
-import React, { useState } from 'react';
+import { Head, usePage, router } from '@inertiajs/react';
+import React from 'react';
 
 export default function Cart() {
-    const user = usePage().props.auth.user;
-
-    const [cartItems, setCartItems] = useState([
-        {
-            id: 1,
-            name: 'Example Product',
-            price: 29.99,
-            quantity: 1,
-            image: '/shirt.png',
-        },
-        {
-            id: 2,
-            name: 'Example Product',
-            price: 49.99,
-            quantity: 1,
-            image: '/shirt.png',
-        },
-        {
-            id: 3,
-            name: 'Example Product',
-            price: 39.99,
-            quantity: 1,
-            image: '/shirt.png',
-        },
-    ]);
-
-    const handleQuantityChange = (id, delta) => {
-        setCartItems((prev) =>
-            prev.map((item) =>
-                item.id === id
-                    ? {
-                          ...item,
-                          quantity:
-                              item.quantity + delta > 0
-                                  ? item.quantity + delta
-                                  : 1,
-                      }
-                    : item
-            )
-        );
-    };
+    const { auth, cart } = usePage().props;
+    const user = auth.user;
+    const cartItems = cart ?? [];
 
     const handleRemove = (id) => {
-        setCartItems((prev) => prev.filter((item) => item.id !== id));
+        router.post(route('cart.remove'), { product_id: id }, {
+            preserveScroll: true,
+        });
+    };
+
+    const handleQuantityChange = (id, quantity) => {
+        if (quantity < 1) return;
+        router.post(route('cart.update'), {
+            product_id: id,
+            quantity: quantity,
+        }, {
+            preserveScroll: true,
+        });
     };
 
     const total = cartItems.reduce(
-        (acc, item) => acc + item.price * item.quantity,
+        (acc, item) => acc + parseFloat(item.price) * item.quantity,
         0
     );
 
@@ -84,7 +57,7 @@ export default function Cart() {
                                         <span>{item.name}</span>
                                     </td>
                                     <td className="py-4 text-gray-700">
-                                        ${item.price.toFixed(2)}
+                                        ${parseFloat(item.price).toFixed(2)}
                                     </td>
                                     <td className="py-4">
                                         <div className="flex items-center gap-2">
@@ -92,7 +65,7 @@ export default function Cart() {
                                                 onClick={() =>
                                                     handleQuantityChange(
                                                         item.id,
-                                                        -1
+                                                        item.quantity - 1
                                                     )
                                                 }
                                                 className="px-2 py-1 rounded border"
@@ -104,7 +77,7 @@ export default function Cart() {
                                                 onClick={() =>
                                                     handleQuantityChange(
                                                         item.id,
-                                                        1
+                                                        item.quantity + 1
                                                     )
                                                 }
                                                 className="px-2 py-1 rounded border"
@@ -115,9 +88,7 @@ export default function Cart() {
                                     </td>
                                     <td className="py-4 text-right">
                                         <button
-                                            onClick={() =>
-                                                handleRemove(item.id)
-                                            }
+                                            onClick={() => handleRemove(item.id)}
                                             className="text-red-600 hover:underline text-sm"
                                         >
                                             Remove
@@ -133,7 +104,10 @@ export default function Cart() {
                     <p className="text-xl font-semibold mb-4">
                         Total: ${total.toFixed(2)}
                     </p>
-                    <button className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800" onClick="/checkout">
+                    <button
+                        className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800"
+                        onClick={() => router.visit('/checkout')}
+                    >
                         Checkout
                     </button>
                 </div>

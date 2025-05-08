@@ -3,7 +3,8 @@ import { Head, usePage } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function AdminDashboard() {
-    const user = usePage().props.auth.user;
+    const { auth, totalSales, orders, products, users, recentOrders } = usePage().props;
+    const user = auth.user;
 
     return (
         <AuthenticatedLayout

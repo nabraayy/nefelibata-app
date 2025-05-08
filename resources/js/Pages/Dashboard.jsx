@@ -16,15 +16,7 @@ export default function Dashboard() {
             <AuthenticatedLayout>
                 <Head title="Inicio" />
 
-                {/* Dark mode toggle */}
-                <div className="flex justify-end px-6 py-2">
-                    <button
-                        onClick={toggleDarkMode}
-                        className="px-4 py-2 border rounded text-sm bg-gray-100 hover:bg-gray-200"
-                    >
-                        {darkMode ? 'Modo Claro' : 'Modo Oscuro'}
-                    </button>
-                </div>
+               
 
                 {/* Hero Section */}
                 <section className="w-full bg-cover bg-center text-white py-24 px-6 text-center relative" style={{ backgroundImage: "url('/nube4.png')" }}>

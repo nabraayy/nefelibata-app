@@ -90,6 +90,14 @@ export default function AuthenticatedLayout({ header, children }) {
                                                 Dashboard
                                             </NavLink>
                                             <NavLink
+                                                href={route('admin.products.index')}
+                                                active={route().current('admin.products.index')}
+                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                            >
+                                                Productos
+                                            </NavLink>
+
+                                            <NavLink
                                                 href={route('admin.orders')}
                                                 active={route().current('admin.orders')}
                                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -103,6 +111,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                             >
                                                 Mensajes
                                             </NavLink>
+                                            
                                         </div>
                                     </div>
                                 )}
