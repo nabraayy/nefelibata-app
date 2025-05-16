@@ -40,7 +40,7 @@ export default function Products() {
                             onChange={(e) => setSearch(e.target.value)}
                         />
 
-                        {user?.role === 'admin' && (
+                        {user?.role === 1 && (
                             <button
                                 onClick={() => router.visit(route('admin.products.create'))}
                                 className="ml-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm shadow"

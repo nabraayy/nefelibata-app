@@ -10,4 +10,11 @@ export default defineConfig({
         }),
         react(),
     ],
+    server: {
+        host: 'localhost',
+        port: 5175, // ✅ Elige un puerto libre
+        hmr: {
+            host: 'localhost',
+        },
+    },
 });

@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\OrderController;
 
 
 Route::get('/', function () {
@@ -49,6 +50,7 @@ Route::get('/cart', function () {
 Route::get('/checkout', function() {
     return Inertia::render('CheckOutPages/Checkout');
 })->name('checkout');
+Route::post('/checkout', [OrderController::class, 'store'])->middleware(['auth'])->name('checkout.store');
 Route::get('/order-confirmed', fn() => Inertia::render('CheckOutPages/OrderConfirmed'))->name('order.confirmed');
 
 
