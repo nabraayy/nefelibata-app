@@ -6,7 +6,7 @@ export default function Checkout() {
     const { auth, cart = [] } = usePage().props;
     const user = auth.user;
 
-    const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const totalPrice = cart.reduce((acc, item) => acc + Number(item.price) * item.quantity, 0);
 
     const [form, setForm] = useState({
         name: user.name || '',
@@ -29,7 +29,7 @@ export default function Checkout() {
         const orderItems = cart.map(item => ({
             product_id: item.id,
             quantity: item.quantity,
-            price: item.price
+            price: Number(item.price),
         }));
 
         router.post(route('checkout.store'), {
@@ -95,9 +95,9 @@ export default function Checkout() {
                                         <li key={index} className="py-3 flex justify-between items-center">
                                             <div>
                                                 <p className="font-medium text-gray-700">{item.name}</p>
-                                                <p className="text-sm text-gray-500">{item.quantity} x {item.price.toFixed(2)} €</p>
+                                                <p className="text-sm text-gray-500">{item.quantity} x {Number(item.price).toFixed(2)} €</p>
                                             </div>
-                                            <p className="font-semibold text-gray-800">{(item.quantity * item.price).toFixed(2)} €</p>
+                                            <p className="font-semibold text-gray-800">{(item.quantity * Number(item.price)).toFixed(2)} €</p>
                                         </li>
                                     ))}
                                 </ul>

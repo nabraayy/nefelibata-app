@@ -62,7 +62,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 </NavLink>
                             </div>
                             <div className="hidden sm:ms-10 sm:flex items-center relative group">
-                                {user.role === 1 && (
+                                {user.role === 'admin' && (
                                     <div className="relative">
                                         <button
                                             className="text-gray-700 hover:text-black font-medium flex items-center gap-1"
