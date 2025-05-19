@@ -6,43 +6,47 @@ export default function AdminDashboard() {
     const { auth, totalSales, orders, products, users, recentOrders } = usePage().props;
     const user = auth.user;
 
+    const getStatusClass = (status) => {
+        switch (status) {
+            case 'pagada': return 'bg-green-100 text-green-800';
+            case 'pendiente': return 'bg-gray-200 text-gray-800';
+            case 'enviada': return 'bg-blue-100 text-blue-800';
+            default: return 'bg-gray-100 text-gray-700';
+        }
+    };
+
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Panel de Administración - {user.name}
-                </h2>
-            }
-        >
-            <Head title="Panel Administración" >
-            <link rel="icon" type="image/png" href="/logo.png" sizes="32x32" />
+        <AuthenticatedLayout header={
+            <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                Panel de Administración - {user.name}
+            </h2>
+        }>
+            <Head title="Panel Administración">
+                <link rel="icon" type="image/png" href="/logo.png" sizes="32x32" />
             </Head>
 
-
             <div className="min-h-screen bg-gray-50 p-8 text-gray-800">
-               
-
-                
+                {/* Métricas */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                     <div className="bg-white p-4 rounded-lg shadow text-center">
-                        <h2 className="text-xl font-semibold">$1.200</h2>
+                        <h2 className="text-xl font-semibold">{Number(totalSales).toFixed(2)} €</h2>
                         <p className="text-gray-500">Ventas Totales</p>
                     </div>
                     <div className="bg-white p-4 rounded-lg shadow text-center">
-                        <h2 className="text-xl font-semibold">45</h2>
+                        <h2 className="text-xl font-semibold">{orders}</h2>
                         <p className="text-gray-500">Pedidos</p>
                     </div>
                     <div className="bg-white p-4 rounded-lg shadow text-center">
-                        <h2 className="text-xl font-semibold">32</h2>
+                        <h2 className="text-xl font-semibold">{products}</h2>
                         <p className="text-gray-500">Productos</p>
                     </div>
                     <div className="bg-white p-4 rounded-lg shadow text-center">
-                        <h2 className="text-xl font-semibold">78</h2>
+                        <h2 className="text-xl font-semibold">{users}</h2>
                         <p className="text-gray-500">Usuarios</p>
                     </div>
                 </div>
 
-                
+                {/* Pedidos recientes e inventario */}
                 <div className="grid md:grid-cols-2 gap-6 mb-8">
                     <div className="bg-white p-6 rounded-xl shadow">
                         <h3 className="text-lg font-bold mb-4">Pedidos Recientes</h3>
@@ -56,26 +60,14 @@ export default function AdminDashboard() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {[
-                                    { id: 1001, name: "John Smith", date: "Hoy", status: "Completed" },
-                                    { id: 1002, name: "Alice Johnson", date: "Ayer", status: "Pending" },
-                                    { id: 1003, name: "Michael Brown", date: "22 Abril 2024", status: "Processing" },
-                                    { id: 1004, name: "Emily White", date: "21 Abril 2024", status: "Processing" },
-                                    { id: 1005, name: "David Wilson", date: "20 Abril 2024", status: "Processing" },
-                                ].map((order) => (
+                                {recentOrders.map(order => (
                                     <tr key={order.id} className="border-t">
-                                        <td>{order.id}</td>
+                                        <td>#{order.id}</td>
                                         <td>{order.name}</td>
                                         <td>{order.date}</td>
                                         <td>
-                                            <span className={`px-2 py-1 text-xs rounded-full ${
-                                                order.status === "Completed"
-                                                    ? "bg-green-100 text-green-800"
-                                                    : order.status === "Pending"
-                                                    ? "bg-yellow-100 text-yellow-800"
-                                                    : "bg-blue-100 text-blue-800"
-                                            }`}>
-                                                {order.status}
+                                            <span className={`px-2 py-1 text-xs rounded-full ${getStatusClass(order.status)}`}>
+                                                {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                                             </span>
                                         </td>
                                     </tr>
@@ -94,16 +86,6 @@ export default function AdminDashboard() {
                             <li><span className="inline-block w-3 h-3 bg-blue-400 mr-2 rounded-full"></span>Poco Stock</li>
                             <li><span className="inline-block w-3 h-3 bg-blue-200 mr-2 rounded-full"></span>Agotado</li>
                         </ul>
-                    </div>
-                </div>
-
-                {/* Manage Products */}
-                <div className="bg-white p-6 rounded-xl shadow">
-                    <h3 className="text-lg font-bold mb-4">Gestión de Productos</h3>
-                    <div className="flex flex-wrap gap-4">
-                        <button className="border border-blue-600 text-blue-600 px-4 py-2 rounded-lg">➕ Añadir</button>
-                        <button className="border border-blue-600 text-blue-600 px-4 py-2 rounded-lg">✏️ Editar</button>
-                        <button className="border border-blue-600 text-blue-600 px-4 py-2 rounded-lg">🗑️ Eliminar</button>
                     </div>
                 </div>
             </div>

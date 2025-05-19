@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\Session;
 
+
 class CheckoutController extends Controller
 {
     // Mostrar la vista de checkout
@@ -60,4 +61,5 @@ class CheckoutController extends Controller
 
         return redirect()->route('order.confirmed')->with('success', 'Pedido realizado correctamente.');
     }
+    
 }

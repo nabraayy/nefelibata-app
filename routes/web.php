@@ -54,6 +54,11 @@ Route::post('/checkout', [OrderController::class, 'store'])->middleware(['auth']
 Route::post('/checkout/paypal-complete', [OrderController::class, 'paypalComplete'])->name('checkout.paypal.complete');
 
 Route::get('/order-confirmed', fn() => Inertia::render('CheckOutPages/OrderConfirmed'))->name('order.confirmed');
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/orders', [AdminController::class, 'orders'])->name('orders');
+    Route::post('/orders/{order}/update-status', [AdminController::class, 'updateStatus'])->name('orders.updateStatus');
+    Route::get('/orders/{order}', [AdminController::class, 'showOrder'])->name('orders.show');
+});
 
 
 
@@ -63,6 +68,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
+    Route::post('/admin/orders/{order}/update-status', [AdminController::class, 'updateOrderStatus'])->name('admin.orders.updateStatus');
     Route::get('/admin/messages', [AdminController::class, 'messages'])->name('admin.messages');
 });
 
