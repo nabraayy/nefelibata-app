@@ -22,7 +22,7 @@ export default function AdminDashboard() {
             <div className="min-h-screen bg-gray-50 p-8 text-gray-800">
                
 
-                {/* Stats */}
+                
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                     <div className="bg-white p-4 rounded-lg shadow text-center">
                         <h2 className="text-xl font-semibold">$1.200</h2>
@@ -42,7 +42,7 @@ export default function AdminDashboard() {
                     </div>
                 </div>
 
-                {/* Recent Orders + Inventory */}
+                
                 <div className="grid md:grid-cols-2 gap-6 mb-8">
                     <div className="bg-white p-6 rounded-xl shadow">
                         <h3 className="text-lg font-bold mb-4">Pedidos Recientes</h3>

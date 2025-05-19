@@ -1,12 +1,14 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, usePage } from '@inertiajs/react';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
+
 
 export default function Checkout() {
     const { auth, cart = [] } = usePage().props;
     const user = auth.user;
 
-    const totalPrice = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const totalPrice = cart.reduce((acc, item) => acc + Number(item.price) * item.quantity, 0);
 
     const [form, setForm] = useState({
         name: user.name || '',
@@ -29,7 +31,7 @@ export default function Checkout() {
         const orderItems = cart.map(item => ({
             product_id: item.id,
             quantity: item.quantity,
-            price: item.price
+            price: Number(item.price),
         }));
 
         router.post(route('checkout.store'), {
@@ -38,15 +40,112 @@ export default function Checkout() {
             total: totalPrice,
         });
     };
+    useEffect(() => {
+    if (form.paymentMethod !== 'paypal') return;
+
+    // Espera a que el DOM tenga el contenedor
+    const interval = setInterval(() => {
+        const container = document.getElementById('paypal-button-container');
+        if (!container) return;
+
+        // Evita renderizar dos veces
+        if (container.hasChildNodes()) {
+            clearInterval(interval);
+            return;
+        }
+
+        const existingScript = document.querySelector('script[src*="paypal.com/sdk/js"]');
+        if (!existingScript) {
+            const script = document.createElement('script');
+            script.src = 'https://www.paypal.com/sdk/js?client-id=Af_uSCl9jdp8VB-NQro2lgF-qTUnWW_iK7vh7nzrvtT3ZXPSX5bC3XbWuXRq56O4ejeLnvzBHbmvnQ8og&currency=EUR';
+            script.addEventListener('load', renderPaypalButton);
+            document.body.appendChild(script);
+        } else {
+            renderPaypalButton();
+        }
+
+        function renderPaypalButton() {
+            if (window.paypal) {
+                window.paypal.Buttons({
+                    createOrder: (data, actions) => {
+                        return actions.order.create({
+                            purchase_units: [{
+                                amount: {
+                                    value: totalPrice.toFixed(2),
+                                },
+                            }],
+                        });
+                    },
+                    onApprove: (data, actions) => {
+                        return actions.order.capture().then(details => {
+                            const orderItems = cart.map(item => ({
+                                product_id: item.id,
+                                quantity: item.quantity,
+                                price: Number(item.price),
+                            }));
+
+                            router.post(route('checkout.paypal.complete'), {
+                                ...form,
+                                cart: orderItems,
+                                total: totalPrice,
+                                paypalDetails: details,
+                            });
+                        });
+                    }
+                }).render('#paypal-button-container');
+            }
+        }
+
+        clearInterval(interval);
+    }, 300); // Revisa cada 300ms
+
+    return () => clearInterval(interval);
+}, [form.paymentMethod]);
+
+
 
     return (
         <AuthenticatedLayout>
             <Head title="Checkout" />
 
-            <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
 
-                    {/* Formulario */}
+                    {/* Resumen del carrito */}
+                    <div className="bg-white p-8 rounded-lg shadow-md border">
+                        <h2 className="text-2xl font-bold text-gray-800 mb-4">Resumen del pedido</h2>
+                        {cart.length > 0 ? (
+                            <>
+                                <ul className="divide-y divide-gray-200">
+                                    {cart.map((item, index) => (
+                                        <li key={index} className="py-3 flex justify-between items-center">
+                                            <div className="flex items-center gap-4">
+                                                {item.image && (
+                                                    <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded" />
+                                                )}
+                                                <div>
+                                                    <p className="font-medium text-gray-700">{item.name}</p>
+                                                    <p className="text-sm text-gray-500">
+                                                        {item.quantity} x {Number(item.price).toFixed(2)} €
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <p className="font-semibold text-gray-800">
+                                                {(item.quantity * Number(item.price)).toFixed(2)} €
+                                            </p>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <div className="border-t mt-4 pt-4 text-right">
+                                    <p className="text-xl font-bold text-gray-900">Total: {totalPrice.toFixed(2)} €</p>
+                                </div>
+                            </>
+                        ) : (
+                            <p className="text-gray-500">Tu carrito está vacío.</p>
+                        )}
+                    </div>
+
+                    {/* Formulario de pago */}
                     <form
                         onSubmit={handleSubmit}
                         className="bg-white p-8 rounded-lg shadow-md border space-y-6"
@@ -84,31 +183,8 @@ export default function Checkout() {
                             Confirmar y pagar {totalPrice.toFixed(2)} €
                         </button>
                     </form>
+                    
 
-                    {/* Resumen del carrito */}
-                    <div className="bg-white p-8 rounded-lg shadow-md border">
-                        <h2 className="text-2xl font-bold text-gray-800 mb-4">Resumen del pedido</h2>
-                        {cart.length > 0 ? (
-                            <>
-                                <ul className="divide-y divide-gray-200">
-                                    {cart.map((item, index) => (
-                                        <li key={index} className="py-3 flex justify-between items-center">
-                                            <div>
-                                                <p className="font-medium text-gray-700">{item.name}</p>
-                                                <p className="text-sm text-gray-500">{item.quantity} x {item.price.toFixed(2)} €</p>
-                                            </div>
-                                            <p className="font-semibold text-gray-800">{(item.quantity * item.price).toFixed(2)} €</p>
-                                        </li>
-                                    ))}
-                                </ul>
-                                <div className="border-t mt-4 pt-4 text-right">
-                                    <p className="text-lg font-bold text-gray-900">Total: {totalPrice.toFixed(2)} €</p>
-                                </div>
-                            </>
-                        ) : (
-                            <p className="text-gray-500">Tu carrito está vacío.</p>
-                        )}
-                    </div>
 
                 </div>
             </div>

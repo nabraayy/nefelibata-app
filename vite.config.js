@@ -12,7 +12,7 @@ export default defineConfig({
     ],
     server: {
         host: 'localhost',
-        port: 5175, // ✅ Elige un puerto libre
+        port: 5175, 
         hmr: {
             host: 'localhost',
         },

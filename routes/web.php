@@ -47,10 +47,12 @@ Route::get('/cart', function () {
 })->name('cart');*/
 
 
-Route::get('/checkout', function() {
-    return Inertia::render('CheckOutPages/Checkout');
-})->name('checkout');
+
+
+Route::get('/checkout', [OrderController::class, 'checkout'])->middleware(['auth'])->name('checkout');
 Route::post('/checkout', [OrderController::class, 'store'])->middleware(['auth'])->name('checkout.store');
+Route::post('/checkout/paypal-complete', [OrderController::class, 'paypalComplete'])->name('checkout.paypal.complete');
+
 Route::get('/order-confirmed', fn() => Inertia::render('CheckOutPages/OrderConfirmed'))->name('order.confirmed');
 
 
