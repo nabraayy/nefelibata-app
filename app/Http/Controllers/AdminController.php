@@ -12,7 +12,7 @@ class AdminController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role !== 'admin') {
+        if ($user->role !== 1) {
             abort(403, 'No tienes permisos para acceder a esta página.');
         }
 

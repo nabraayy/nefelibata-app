@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 
 
 class CartController extends Controller
@@ -16,9 +17,9 @@ class CartController extends Controller
             
             return Inertia::render('ProductPages/Cart', [
                 'auth' => [
-                    'user' => auth()->user()
+                    'user' => Auth::check() ? Auth::user() : null,
                 ],
-                'cart' => array_values($cart), // devuelve con clave 'cart'
+                'cart' => array_values($cart),
             ]);
         }
 
@@ -35,7 +36,7 @@ class CartController extends Controller
             $cart[$product->id] = [
                 'id' => $product->id,
                 'name' => $product->name,
-                'price' => $product->price,
+                'price' => (float) $product->price,
                 'image' => $product->image,
                 'quantity' => 1,
             ];
