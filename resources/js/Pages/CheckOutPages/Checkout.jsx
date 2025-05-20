@@ -183,15 +183,7 @@ export default function Checkout() {
                             Confirmar y pagar {totalPrice.toFixed(2)} €
                         </button>
                     </form>
-                    {form.paymentMethod === 'paypal' && (
-                        <button
-                            type="submit"
-                            disabled={form.paymentMethod === 'paypal'}
-                            className={`w-full ${form.paymentMethod === 'paypal' ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'} text-white py-3 rounded-lg font-semibold`}
-                        >
-                            Confirmar y pagar {totalPrice.toFixed(2)} €
-                        </button>
-                    )}
+                    
 
 
                 </div>

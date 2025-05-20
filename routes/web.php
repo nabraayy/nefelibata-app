@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\CheckoutController;
 
 
 Route::get('/', function () {
@@ -48,19 +47,12 @@ Route::get('/cart', function () {
 })->name('cart');*/
 
 
-<<<<<<< HEAD
-Route::middleware(['auth'])->group(function () {
-    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
-    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
-});
-=======
 
 
 Route::get('/checkout', [OrderController::class, 'checkout'])->middleware(['auth'])->name('checkout');
 Route::post('/checkout', [OrderController::class, 'store'])->middleware(['auth'])->name('checkout.store');
 Route::post('/checkout/paypal-complete', [OrderController::class, 'paypalComplete'])->name('checkout.paypal.complete');
 
->>>>>>> ee22a96 (sisiisis)
 Route::get('/order-confirmed', fn() => Inertia::render('CheckOutPages/OrderConfirmed'))->name('order.confirmed');
 
 
