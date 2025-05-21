@@ -33,8 +33,7 @@ COPY .env.example .env
 # Generar APP_KEY
 RUN php artisan key:generate
 
-# Ejecutar migraciones automáticamente
-RUN php artisan migrate --force
+
 
 # Servir Laravel en el puerto 8080
 CMD php -S 0.0.0.0:8080 -t public
