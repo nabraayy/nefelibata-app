@@ -1,17 +1,16 @@
-import { defineConfig } from 'vite'
-import laravel from 'laravel-vite-plugin'
-import react from '@vitejs/plugin-react'
-
-// Modo detectado desde entorno de Node
-const isProduction = process.env.NODE_ENV === 'production'
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  base: isProduction ? '/build/' : '/',
-  plugins: [
-    laravel({
-      input: ['resources/js/app.jsx'],
-      refresh: true,
-    }),
-    react(),
-  ],
-})
+    plugins: [
+        laravel({
+            input: ['resources/js/app.jsx'],
+            refresh: true,
+        }),
+        react(),
+    ],
+    base: process.env.NODE_ENV === 'production'
+        ? 'https://nefelibata-app-production.up.railway.app/build/'
+        : '/build/',
+});
