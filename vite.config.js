@@ -10,7 +10,5 @@ export default defineConfig({
         }),
         react(),
     ],
-    base: process.env.NODE_ENV === 'production'
-        ? 'https://nefelibata-app-production.up.railway.app/build/'  // <-- con HTTPS
-        : '/build/',
+    base: 'https://nefelibata-app-production.up.railway.app/build/',
 });
