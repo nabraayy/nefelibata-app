@@ -27,13 +27,5 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 # Asignar permisos a carpetas necesarias
 RUN chmod -R 775 storage bootstrap/cache
 
-# Copiar entorno de producción si no existe .env
-COPY .env.example .env
+CMD ./start.sh
 
-# Generar APP_KEY
-RUN php artisan key:generate
-
-
-
-# Servir Laravel en el puerto 8080
-CMD php -S 0.0.0.0:8080 -t public
