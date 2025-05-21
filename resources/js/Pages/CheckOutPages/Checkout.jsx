@@ -2,6 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, usePage } from '@inertiajs/react';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
+import Swal from 'sweetalert2';
 
 
 export default function Checkout() {
@@ -25,21 +26,33 @@ export default function Checkout() {
         setForm({ ...form, [name]: value });
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = async (e) => {
+    e.preventDefault();
 
-        const orderItems = cart.map(item => ({
-            product_id: item.id,
-            quantity: item.quantity,
-            price: Number(item.price),
-        }));
+    const result = await Swal.fire({
+        title: '¿Confirmar pedido?',
+        text: `Vas a pagar un total de ${totalPrice.toFixed(2)} €. ¿Deseas continuar?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, confirmar',
+        cancelButtonText: 'Cancelar',
+    });
 
-        router.post(route('checkout.store'), {
-            ...form,
-            cart: orderItems,
-            total: totalPrice,
-        });
-    };
+    if (!result.isConfirmed) return;
+    
+    const orderItems = cart.map(item => ({
+        product_id: item.id,
+        quantity: item.quantity,
+        price: Number(item.price),
+    }));
+
+    router.post(route('checkout.store'), {
+        ...form,
+        cart: orderItems,
+        total: totalPrice,
+    });
+};
+
     useEffect(() => {
     if (form.paymentMethod !== 'paypal') return;
 
