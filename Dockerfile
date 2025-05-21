@@ -1,25 +1,34 @@
-# Etapa 1: Compilar Vite
-FROM node:18 as node
+# Etapa 1: Build de Vite
+FROM node:20-alpine as build
 
 WORKDIR /app
+
 COPY package*.json ./
 RUN npm install
+
 COPY . .
 RUN npm run build
 
-# Etapa 2: Laravel con PHP
-FROM php:8.3-cli
+# Etapa 2: Laravel + PHP + Apache
+FROM php:8.3-apache
 
+# Instalar dependencias
 RUN apt-get update && apt-get install -y \
-    git unzip curl libzip-dev zip libpng-dev libonig-dev libxml2-dev \
-    && docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl
+    git unzip libzip-dev zip libpng-dev libonig-dev libxml2-dev curl \
+    && docker-php-ext-install pdo pdo_mysql zip
 
+# Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
-COPY --from=node /app /var/www/html
 
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
-RUN chmod -R 775 storage bootstrap/cache
+COPY --from=build /app /var/www/html
 
-CMD php artisan serve --host=0.0.0.0 --port=8080
+RUN composer install --no-dev --optimize-autoloader
+
+RUN chown -R www-data:www-data /var/www/html \
+    && a2enmod rewrite
+
+EXPOSE 8080
+
+CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]
