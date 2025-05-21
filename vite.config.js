@@ -10,5 +10,5 @@ export default defineConfig({
         }),
         react(),
     ],
-    base: 'https://nefelibata-app-production.up.railway.app/build/',
+    base: '/build/', 
 });
