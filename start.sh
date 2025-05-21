@@ -3,6 +3,8 @@
 # Instala dependencias por si acaso
 composer install --no-interaction --prefer-dist --optimize-autoloader
 
+php artisan serve --host=0.0.0.0 --port=8080
+
 # Crea la clave si no existe
 if [ ! -f .env ]; then
   cp .env.example .env

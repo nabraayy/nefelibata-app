@@ -27,5 +27,4 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 # Asignar permisos a carpetas necesarias
 RUN chmod -R 775 storage bootstrap/cache
 
-CMD ./start.sh
-
+CMD php -S 0.0.0.0:8080 -t public
