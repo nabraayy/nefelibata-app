@@ -14,3 +14,16 @@ RUN apt-get update && apt-get install -y \
 
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Copiar el código de Laravel al contenedor
+WORKDIR /var/www/html
+COPY . .
+
+# Instalar dependencias de Laravel
+RUN composer install
+
+# Dar permisos a Laravel
+RUN chmod -R 775 storage bootstrap/cache
+
+# Servir Laravel en el puerto 8080
+CMD php -S 0.0.0.0:8080 -t public
