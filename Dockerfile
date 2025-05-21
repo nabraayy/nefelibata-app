@@ -15,16 +15,26 @@ RUN apt-get update && apt-get install -y \
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copiar el código de Laravel al contenedor
+# Establecer el directorio de trabajo
 WORKDIR /var/www/html
+
+# Copiar el código al contenedor
 COPY . .
 
-# Instalar dependencias de Laravel
-RUN composer install
+# Instalar dependencias
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Dar permisos a Laravel
+# Asignar permisos a carpetas necesarias
 RUN chmod -R 775 storage bootstrap/cache
 
+# Copiar entorno de producción si no existe .env
+COPY .env.example .env
+
+# Generar APP_KEY
+RUN php artisan key:generate
+
+# Ejecutar migraciones automáticamente
+RUN php artisan migrate --force
+
 # Servir Laravel en el puerto 8080
-EXPOSE 8080
 CMD php -S 0.0.0.0:8080 -t public
