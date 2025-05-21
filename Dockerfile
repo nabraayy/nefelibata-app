@@ -1,3 +1,15 @@
+FROM node:18 as node
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+
 FROM php:8.3-cli
 
 # Instalar extensiones necesarias
@@ -15,16 +27,16 @@ RUN apt-get update && apt-get install -y \
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Establecer el directorio de trabajo
 WORKDIR /var/www/html
 
-# Copiar el código al contenedor
-COPY . .
+# Copiar Laravel y archivos generados por Vite
+COPY --from=node /app /var/www/html
 
-# Instalar dependencias
+# Instalar dependencias PHP
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Asignar permisos a carpetas necesarias
+# Dar permisos a Laravel
 RUN chmod -R 775 storage bootstrap/cache
 
-CMD php -S 0.0.0.0:8080 -t public
+# Servir la app
+CMD php artisan serve --host=0.0.0.0 --port=8080
