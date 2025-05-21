@@ -17,3 +17,8 @@ done
 
 # Levanta Laravel
 php -S 0.0.0.0:8080 -t public
+# Ejecutar migraciones hasta que funcionen
+until php artisan migrate --force; do
+  echo "Esperando a que la base de datos esté lista..."
+  sleep 5
+done
