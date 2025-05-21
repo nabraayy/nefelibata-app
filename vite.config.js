@@ -3,7 +3,6 @@ import laravel from 'laravel-vite-plugin';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
-    // Cargar variables de entorno según el modo (development o production)
     const env = loadEnv(mode, process.cwd(), '');
 
     return {
@@ -14,13 +13,17 @@ export default defineConfig(({ mode }) => {
             }),
             react(),
         ],
-        base: mode === 'production' ? '/build/' : '/',
-        server: {
-            host: 'localhost',
-            port: 5175,
-            hmr: {
-                host: 'localhost',
+        base: mode === 'production' ? `${env.APP_URL}/build/` : '/',
+        build: {
+            manifest: true,
+            outDir: 'public/build',
+            rollupOptions: {
+                input: 'resources/js/app.jsx',
             },
+        },
+        server: {
+            host: true,
+            port: 5173,
         },
     };
 });
