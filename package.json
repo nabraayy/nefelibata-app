@@ -29,6 +29,7 @@
         "@mantine/core": "^8.0.0",
         "@mui/material": "^7.1.0",
         "@paypal/react-paypal-js": "^8.8.3",
+        "aos": "^2.3.4",
         "framer-motion": "^12.12.1",
         "lucide-react": "^0.503.0",
         "react-countdown": "^2.3.6",
@@ -39,6 +40,7 @@
         "sweetalert2": "^11.21.2",
         "sweetalert2-react-content": "^5.1.0",
         "swiper": "^11.2.6",
-        "tsparticles": "^3.8.1"
+        "tsparticles": "^3.8.1",
+        "typeit": "^8.8.7"
     }
 }

@@ -74,11 +74,11 @@ export default function Dashboard() {
                         modes: { repulse: { distance: 80, duration: 0.4 } }
                     },
                     particles: {
-                        color: { value: '#ffffff' },
+                        color: { value: '#e4d4c8' },
                         links: {
                         enable: true,
                         distance: 120,
-                        color: '#ffffff',
+                        color: '#a47551',
                         opacity: 0.2,
                         width: 1
                         },
