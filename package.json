@@ -29,12 +29,16 @@
         "@mantine/core": "^8.0.0",
         "@mui/material": "^7.1.0",
         "@paypal/react-paypal-js": "^8.8.3",
-        "framer-motion": "^12.10.4",
+        "framer-motion": "^12.12.1",
         "lucide-react": "^0.503.0",
         "react-countdown": "^2.3.6",
+        "react-simple-typewriter": "^5.0.1",
         "react-slick": "^0.30.3",
+        "react-tsparticles": "^2.12.2",
         "slick-carousel": "^1.8.1",
         "sweetalert2": "^11.21.2",
-        "swiper": "^11.2.6"
+        "sweetalert2-react-content": "^5.1.0",
+        "swiper": "^11.2.6",
+        "tsparticles": "^3.8.1"
     }
 }
