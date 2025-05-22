@@ -10,6 +10,7 @@ import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function Dashboard() {
     const user = usePage().props.auth.user;
@@ -129,12 +130,11 @@ export default function Dashboard() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.5, duration: 0.5 }}
                     >
-                    <Link
-                        href={route('products')}
-                        className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 py-4 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
-                    >
-                        ¡Explora la tienda!
-                    </Link>
+                    <PrimaryButton href={route('products')} className="text-lg px-8 py-4">
+                    ¡Explora la tienda!
+                    </PrimaryButton>
+
+
                     </motion.div>
                 </motion.div>
                 </section>
@@ -154,12 +154,10 @@ export default function Dashboard() {
                         <p className="text-lg text-gray-600 mb-6">
                             Hasta un <span className="text-red-600 font-semibold">40% de descuento</span> en productos seleccionados.
                         </p>
-                        <Link
-                            href={route('products')}
-                            className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition duration-300 hover:scale-105"
-                        >
-                            Ver ofertas ahora
-                        </Link>
+                        <PrimaryButton href={route('products')} className="text-lg px-8 py-4">
+                        Ver ofertas ahora
+                        </PrimaryButton>
+
                     </div>
                 </section>
 
@@ -171,48 +169,48 @@ export default function Dashboard() {
             <img src="/portatil.png" alt="Producto del día" className="h-32 mx-auto mb-4 object-contain" />
             <h3 className="text-xl font-semibold text-gray-800 mb-2">Portátil ASUS Zen</h3>
             <p className="text-gray-600 text-sm mb-6">30% de descuento solo por hoy</p>
-            <button
-            onClick={handleProductDetails}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-full transition shadow-md hover:shadow-lg"
-            >
+            <PrimaryButton onClick={handleProductDetails} className="text-lg px-8 py-4">
             Ver más
-            </button>
+            </PrimaryButton>
+
         </div>
         </section>
 
 {/* Categorías */}
         <section className="py-20 px-6 bg-white text-center animate-slide-up">
-            <h2 className="text-4xl font-extrabold mb-10 text-gray-800">Explora por Categoría</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
-                {[
-                    { name: 'Portátiles', icon: '/portatil.png' },
-                    { name: 'Auriculares Gaming', icon: '/cascos/cascos1.webp' },
-                    { name: 'Pantallas', icon: '/panatalla/panatalla2.webp' },
-                    { name: 'Ratones', icon: '/raton/raton1.webp' },
-                    { name: 'Teclado', icon: '/teclados/teclado1.png' },
-                    { name: 'Tablet', icon: '/tablet/tabl1.webp' },
-                    { name: 'Base Refri', icon: '/refri/base-refri1.webp' },
-                    { name: 'Móvil', icon: '/moviles/mo1.webp' },
-                    { name: 'Auriculares', icon: '/auriculares/auri1.webp' },
-                    { name: 'Cargadores', icon: '/cargador/cargador1.webp' },
-                    { name: 'Baterías', icon: '/bateria/bateria1.webp' },
-                    ].map((cat, index) => (
-                        <div
-                            key={index}
-                            className="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 p-6 cursor-pointer group"
-                        >
-                            <div className="flex justify-center mb-4">
-                                <img
-                                    src={cat.icon}
-                                    alt={cat.name}
-                                    className="h-20 w-20 object-contain group-hover:scale-110 transition-transform duration-300"
-                                />
-                            </div>
-                            <h3 className="text-md font-semibold text-gray-700 group-hover:text-blue-600 transition-colors">{cat.name}</h3>
-                        </div>
-                    ))}
-            </div>
+        <h2 className="text-4xl font-extrabold mb-10 text-gray-800">Explora por Categoría</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            {[
+            { name: 'Portátiles', icon: '/portatil.png' },
+            { name: 'Auriculares Gaming', icon: '/cascos/cascos1.webp' },
+            { name: 'Pantallas', icon: '/panatalla/panatalla2.webp' },
+            { name: 'Ratones', icon: '/raton/raton1.webp' },
+            { name: 'Teclado', icon: '/teclados/teclado1.png' },
+            { name: 'Tablet', icon: '/tablet/tabl1.webp' },
+            { name: 'Base Refri', icon: '/refri/base-refri1.webp' },
+            { name: 'Móvil', icon: '/moviles/mo1.webp' },
+            { name: 'Auriculares', icon: '/auriculares/auri1.webp' },
+            { name: 'Cargadores', icon: '/cargador/cargador1.webp' },
+            { name: 'Baterías', icon: '/bateria/bateria1.webp' },
+            ].map((cat, index) => (
+            <Link key={index} href={route('products')}>
+                <div className="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 p-6 cursor-pointer group">
+                <div className="flex justify-center mb-4">
+                    <img
+                    src={cat.icon}
+                    alt={cat.name}
+                    className="h-20 w-20 object-contain group-hover:scale-110 transition-transform duration-300"
+                    />
+                </div>
+                <h3 className="text-md font-semibold text-gray-700 group-hover:text-blue-600 transition-colors">
+                    {cat.name}
+                </h3>
+                </div>
+            </Link>
+            ))}
+        </div>
         </section>
+
 
 
 {/* Opiniones */}
