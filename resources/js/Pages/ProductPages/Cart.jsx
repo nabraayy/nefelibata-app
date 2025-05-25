@@ -2,6 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage, router } from '@inertiajs/react';
 import PrimaryButton from '@/Components/PrimaryButton';
 import React from 'react';
+import Footer from "@/Components/Footer";
 
 export default function Cart() {
     const { auth, cart } = usePage().props;
@@ -91,6 +92,7 @@ export default function Cart() {
                     )}
                 </div>
             </div>
+            <Footer />
         </AuthenticatedLayout>
     );
 }

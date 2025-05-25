@@ -3,6 +3,7 @@ import { Head, router, usePage } from '@inertiajs/react';
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import PrimaryButton from '@/Components/PrimaryButton';
+import Footer from "@/Components/Footer";
 
 export default function Checkout() {
     const { auth, cart = [] } = usePage().props;
@@ -252,6 +253,7 @@ export default function Checkout() {
                     </form>
                 </div>
             </div>
+            <Footer />
         </AuthenticatedLayout>
     );
 }
