@@ -10,6 +10,7 @@ export default function Welcome({ auth }) {
     useEffect(() => {
         AOS.init({ once: true, duration: 800 });
     }, []);
+const { reviews } = usePage().props;
 
     return (
         <>
@@ -250,6 +251,57 @@ export default function Welcome({ auth }) {
 
 
 
+{/* Vista previa de productos (para no registrados) */}
+{!auth.user && (
+  <section
+    className="py-20 px-6 sm:px-10 lg:px-20 bg-white text-center"
+    data-aos="fade-up"
+  >
+    <h2 className="text-4xl sm:text-5xl font-extrabold mb-6 text-[#2F4156] relative inline-block after:content-[''] after:absolute after:w-20 after:h-1 after:bg-[#567C8D] after:bottom-0 after:left-1/2 after:-translate-x-1/2">
+      Explora nuestro catálogo
+    </h2>
+    <p className="text-lg text-[#567C8D] max-w-xl mx-auto mb-12">
+      Echa un vistazo a algunos de nuestros productos destacados. Para conocer los precios y comprarlos, por favor regístrate o inicia sesión.
+    </p>
+
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+      {[
+        { name: 'Portátil ASUS', image: '/portatil.png' },
+        { name: 'Raton Gaming', image: '/raton/raton1.webp' },
+        { name: 'Tablet Android', image: '/tablet/tabl1.webp' },
+        { name: 'Pantalla UltraWide', image: '/panatalla/panatalla2.webp' },
+        { name: 'Auriculares Bluetooth', image: '/auriculares/auri1.webp' },
+        { name: 'WebCam 4HD', image: '/webcam/web-cam1.webp' },
+        { name: 'Móvil Apple', image: '/moviles/m1.webp' },
+        { name: 'Cargador Rápido', image: '/cargador/cargador1.webp' },
+      ].map((product, index) => (
+        <div
+          key={index}
+          className="bg-white border border-[#C8D9E6] rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 cursor-default group"
+        >
+          <div className="flex justify-center mb-4">
+            <img
+              src={product.image}
+              alt={product.name}
+              className="h-24 object-contain transition-transform duration-300 group-hover:scale-105"
+            />
+          </div>
+          <h3 className="text-md font-semibold text-[#2F4156]">{product.name}</h3>
+          <p className="text-sm text-[#999] mt-1 italic">Inicia sesión para ver más</p>
+        </div>
+      ))}
+    </div>
+
+    <div className="mt-12">
+      <Link
+        href={route('login')}
+        className="inline-block bg-[#567C8D] hover:bg-[#2F4156] text-white font-medium px-6 py-3 rounded-full shadow transition"
+      >
+        Ver precios e iniciar sesión
+      </Link>
+    </div>
+  </section>
+)}
 
 
 

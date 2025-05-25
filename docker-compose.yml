@@ -35,7 +35,7 @@ services:
     ports:
       - 8081:80
     environment:
-      PMA_HOST: mysql
+      PMA_HOST: dbnefelibata-app
       PMA_USER: root
       PMA_PASSWORD: root
 
