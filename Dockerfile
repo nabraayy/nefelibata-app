@@ -36,11 +36,11 @@ RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www/storage
 # Variables de entorno para Railway
 ENV APP_ENV=production
 ENV APP_DEBUG=false
-ENV APP_URL=${APP_URL}
-ENV PORT=8000
+ENV APP_URL=https://nefelibata-app-production.up.railway.app/build
+ENV PORT=8080
 
 # Exponer puerto Railway
-EXPOSE 8000
+EXPOSE 8080
 
 # Comando por defecto para ejecutar Laravel
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+CMD php artisan serve --host=0.0.0.0 --port=8080
