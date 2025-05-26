@@ -24,4 +24,5 @@ RUN chown -R www-data:www-data /var/www && chmod -R 775 storage bootstrap/cache
 # Expone el puerto que Railway asigne
 ENV PORT=8080
 EXPOSE 8080
-CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=8080"]
+CMD ["php", "artisan", "serve", "--host=127.0.0.1", "--port=8080"]
+
