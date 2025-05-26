@@ -10,7 +10,7 @@ export default function Welcome({ auth }) {
     useEffect(() => {
         AOS.init({ once: true, duration: 800 });
     }, []);
-const { reviews } = usePage().props;
+/*const { reviews } = usePage().props;*/
 
     return (
         <>
@@ -89,7 +89,7 @@ const { reviews } = usePage().props;
                             data-aos-delay="200"
                             className="flex justify-center"
                         >
-                            <PrimaryButton className="animate-bounce px-8 py-4 text-lg rounded-full shadow-xl transition transform hover:scale-105 duration-300">
+                            <PrimaryButton className="animate-bounce px-8 py-4 text-lg rounded-full shadow-xl transition transform hover:scale-105 duration-300" href={route('register')}>
                                 ¡Únete ahora!
                             </PrimaryButton>
                         </div>
@@ -308,45 +308,45 @@ const { reviews } = usePage().props;
 
                 {/* Dónde estamos */}
                 <section
-  className="py-20 px-6 sm:px-10 lg:px-24 w-full"
-  style={{ backgroundColor: "#F5EFEB" }}
-  data-aos="fade-up"
->
-  {/* Título */}
-  <h2 className="text-4xl sm:text-5xl font-extrabold text-center mb-16 text-[#2F4156] relative inline-block after:content-[''] after:absolute after:w-24 after:h-1 after:bg-[#567C8D] after:bottom-0 after:left-1/2 after:-translate-x-1/2">
-    Dónde estamos
-  </h2>
+                className="py-20 px-6 sm:px-10 lg:px-24 w-full"
+                style={{ backgroundColor: "#F5EFEB" }}
+                data-aos="fade-up"
+              >
+                {/* Título */}
+                <h2 className="text-4xl sm:text-5xl font-extrabold text-center mb-16 text-[#2F4156] relative inline-block after:content-[''] after:absolute after:w-24 after:h-1 after:bg-[#567C8D] after:bottom-0 after:left-1/2 after:-translate-x-1/2">
+                  Dónde estamos
+                </h2>
 
-  {/* Contenido */}
-  <div className="grid md:grid-cols-2 gap-12 items-center">
-    {/* Información */}
-    <div
-      className="bg-white p-8 rounded-2xl shadow-md border border-[#C8D9E6] text-[#2F4156] space-y-4"
-      data-aos="fade-right"
-    >
-      <h3 className="text-2xl font-bold text-[#567C8D] mb-6">Nuestra Oficina</h3>
-      <div className="space-y-2 text-lg">
-        <p>
-          <span className="font-semibold">Dirección:</span> Calle Ejemplo 123
-        </p>
-        <p>AD500, Andorra La Vella</p>
-        <p>
-          <span className="font-semibold">Teléfono:</span>{" "}
-          <a href="tel:+34123456789" className="hover:text-[#567C8D] transition">
-            +34 123 456 789
-          </a>
-        </p>
-        <p>
-          <span className="font-semibold">Email:</span>{" "}
-          <a
-            href="mailto:info@nefelibata.com"
-            className="underline hover:text-[#567C8D] transition"
-          >
-            info@nefelibata.com
-          </a>
-        </p>
-      </div>
-    </div>
+                {/* Contenido */}
+                <div className="grid md:grid-cols-2 gap-12 items-center">
+                  {/* Información */}
+                  <div
+                    className="bg-white p-8 rounded-2xl shadow-md border border-[#C8D9E6] text-[#2F4156] space-y-4"
+                    data-aos="fade-right"
+                  >
+                    <h3 className="text-2xl font-bold text-[#567C8D] mb-6">Nuestra Oficina</h3>
+                    <div className="space-y-2 text-lg">
+                      <p>
+                        <span className="font-semibold">Dirección:</span> Calle Andorrana 123
+                      </p>
+                      <p>AD500, Andorra La Vella</p>
+                      <p>
+                        <span className="font-semibold">Teléfono:</span>{" "}
+                        <a href="tel:+34123456789" className="hover:text-[#567C8D] transition">
+                          +34 123 456 789
+                        </a>
+                      </p>
+                      <p>
+                        <span className="font-semibold">Email:</span>{" "}
+                        <a
+                          href="mailto:info@nefelibata.com"
+                          className="underline hover:text-[#567C8D] transition"
+                        >
+                          info@nefelibata.com
+                        </a>
+                      </p>
+                    </div>
+                  </div>
 
     {/* Mapa */}
     <div
