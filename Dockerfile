@@ -22,8 +22,6 @@ RUN php artisan optimize
 RUN chown -R www-data:www-data /var/www && chmod -R 775 storage bootstrap/cache
 
 # Expone el puerto que Railway asigne
-ENV PORT=${PORT:-8080}
-EXPOSE ${PORT}
-
-# Comando de inicio
-CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT}"]
+ENV PORT=8080
+EXPOSE 8080
+CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=8080"]
