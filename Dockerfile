@@ -41,10 +41,11 @@ ENV APP_URL=https://nefelibata-app-production.up.railway.app/build
 
 
 # Exponer puerto Railway
-EXPOSE $PORT
+EXPOSE 8001
 
 # Comando por defecto para ejecutar Laravel
-CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=$PORT"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8001"]
+
 
 
 
