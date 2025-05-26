@@ -29,7 +29,7 @@ RUN npm install && npm run build
 
 # Limpiar y optimizar config Laravel
 RUN php artisan config:clear && php artisan route:clear && php artisan view:clear
-
+RUN php artisan optimize
 # Asignar permisos a storage y bootstrap/cache
 RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www/storage
 
@@ -43,5 +43,6 @@ ENV PORT=8080
 EXPOSE 8080
 
 # Comando por defecto para ejecutar Laravel
-CMD php -S 0.0.0.0:8080 -t public
+CMD php artisan serve --host=0.0.0.0 --port=$PORT
+
 
