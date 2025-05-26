@@ -10,11 +10,11 @@ export default defineConfig({
         }),
         react(),
     ],
-    server: {
-        host: 'localhost',
-        port: 5175, 
-        hmr: {
-            host: 'localhost',
+    build: {
+        manifest: true,
+        outDir: 'public/build',
+        rollupOptions: {
+            input: 'resources/js/app.jsx',
         },
     },
 });
