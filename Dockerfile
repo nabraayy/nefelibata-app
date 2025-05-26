@@ -38,13 +38,13 @@ RUN chmod -R 775 storage bootstrap/cache && chown -R www-data:www-data .
 ENV APP_ENV=production
 ENV APP_DEBUG=false
 ENV APP_URL=https://nefelibata-app-production.up.railway.app/build
-ENV PORT=8080
+
 
 # Exponer puerto Railway
-EXPOSE 8080
+EXPOSE $PORT
 
 # Comando por defecto para ejecutar Laravel
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
+CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=$PORT"]
 
 
 
