@@ -32,6 +32,7 @@ RUN php artisan config:clear && php artisan route:clear && php artisan view:clea
 RUN php artisan optimize
 # Asignar permisos a storage y bootstrap/cache
 RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www/storage
+RUN chmod -R 775 storage bootstrap/cache && chown -R www-data:www-data .
 
 # Variables de entorno para Railway
 ENV APP_ENV=production
@@ -43,6 +44,8 @@ ENV PORT=8080
 EXPOSE 8080
 
 # Comando por defecto para ejecutar Laravel
-CMD php artisan serve --host=0.0.0.0 --port=$PORT
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
+
+
 
 
