@@ -1,52 +1,29 @@
+# Dockerfile para Railway
 FROM php:8.3-cli
 
-# Instalar extensiones necesarias de PHP
+# Instala dependencias
 RUN apt-get update && apt-get install -y \
-    git \
-    unzip \
-    curl \
-    zip \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    libzip-dev \
-    nodejs \
-    npm \
+    git unzip curl zip libpng-dev libonig-dev libxml2-dev libzip-dev nodejs npm \
     && docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl
 
-# Instalar Composer
+# Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Crear directorio de trabajo
 WORKDIR /var/www
-
-# Copiar archivos del proyecto
 COPY . .
 
-# Instalar dependencias PHP y frontend
+# Dependencias
 RUN composer install --no-dev --optimize-autoloader
 RUN npm install && npm run build
 
-# Limpiar y optimizar config Laravel
+# Optimización Laravel
 RUN php artisan config:clear && php artisan route:clear && php artisan view:clear
 RUN php artisan optimize
-# Asignar permisos a storage y bootstrap/cache
-RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www/storage
-RUN chmod -R 775 storage bootstrap/cache && chown -R www-data:www-data .
+RUN chown -R www-data:www-data /var/www && chmod -R 775 storage bootstrap/cache
 
-# Variables de entorno para Railway
-ENV APP_ENV=production
-ENV APP_DEBUG=false
-ENV APP_URL=https://nefelibata-app-production.up.railway.app/build
+# Expone el puerto que Railway asigne
+ENV PORT=${PORT:-8080}
+EXPOSE ${PORT}
 
-
-# Exponer puerto Railway
-EXPOSE 8001
-
-# Comando por defecto para ejecutar Laravel
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8001"]
-
-
-
-
-
+# Comando de inicio
+CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT}"]
