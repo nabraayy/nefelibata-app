@@ -23,20 +23,24 @@ WORKDIR /var/www
 # Copiar archivos del proyecto
 COPY . .
 
-# Instalar dependencias PHP y Node
+# Instalar dependencias PHP y frontend
 RUN composer install --no-dev --optimize-autoloader
 RUN npm install && npm run build
 
-# Permisos y configuración
-RUN chown -R www-data:www-data /var/www \
-    && chmod -R 755 /var/www/storage
+# Limpiar y optimizar config Laravel
+RUN php artisan config:clear && php artisan route:clear && php artisan view:clear
 
-# Generar clave si no existe (opcional si la defines en .env)
-RUN php artisan config:clear
-RUN php artisan route:clear
+# Asignar permisos a storage y bootstrap/cache
+RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www/storage
 
-# Exponer el puerto
+# Variables de entorno para Railway
+ENV APP_ENV=production
+ENV APP_DEBUG=false
+ENV APP_URL=${APP_URL}
+ENV PORT=8000
+
+# Exponer puerto Railway
 EXPOSE 8000
 
-# Comando de inicio (puedes cambiarlo por nginx/php-fpm si lo deseas)
-CMD php artisan serve --host=0.0.0.0 --port=8000
+# Comando por defecto para ejecutar Laravel
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
