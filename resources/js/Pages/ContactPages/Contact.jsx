@@ -1,11 +1,24 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import { usePage } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import Footer from "@/Components/Footer";
 import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function Contact() {
-    const user = usePage().props.auth.user;
+    const user = usePage().props.auth?.user;
+
+    const { data, setData, post, processing, errors, reset } = useForm({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+    });
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        post(route('contact.store'), {
+            onSuccess: () => reset(),
+        });
+    };
 
     return (
         <AuthenticatedLayout>
@@ -22,37 +35,54 @@ export default function Contact() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                         {/* Formulario */}
-                        <form className="space-y-5">
+                        <form onSubmit={handleSubmit} className="space-y-5">
                             <div>
                                 <label className="block text-sm font-semibold text-[#2F4156] mb-1">Nombre</label>
                                 <input
                                     type="text"
+                                    value={data.name}
+                                    onChange={(e) => setData('name', e.target.value)}
                                     className="w-full border border-[#C8D9E6] rounded-xl px-4 py-3 shadow-sm focus:ring-2 focus:ring-[#567C8D] transition"
                                 />
+                                {errors.name && <p className="text-red-600 text-sm mt-1">{errors.name}</p>}
                             </div>
+
                             <div>
                                 <label className="block text-sm font-semibold text-[#2F4156] mb-1">Email</label>
                                 <input
                                     type="email"
+                                    value={data.email}
+                                    onChange={(e) => setData('email', e.target.value)}
                                     className="w-full border border-[#C8D9E6] rounded-xl px-4 py-3 shadow-sm focus:ring-2 focus:ring-[#567C8D] transition"
                                 />
+                                {errors.email && <p className="text-red-600 text-sm mt-1">{errors.email}</p>}
                             </div>
+
                             <div>
                                 <label className="block text-sm font-semibold text-[#2F4156] mb-1">Asunto</label>
                                 <input
                                     type="text"
+                                    value={data.subject}
+                                    onChange={(e) => setData('subject', e.target.value)}
                                     className="w-full border border-[#C8D9E6] rounded-xl px-4 py-3 shadow-sm focus:ring-2 focus:ring-[#567C8D] transition"
                                 />
+                                {errors.subject && <p className="text-red-600 text-sm mt-1">{errors.subject}</p>}
                             </div>
+
                             <div>
                                 <label className="block text-sm font-semibold text-[#2F4156] mb-1">Mensaje</label>
                                 <textarea
                                     rows="5"
+                                    value={data.message}
+                                    onChange={(e) => setData('message', e.target.value)}
                                     className="w-full border border-[#C8D9E6] rounded-xl px-4 py-3 shadow-sm focus:ring-2 focus:ring-[#567C8D] transition resize-none"
                                 ></textarea>
+                                {errors.message && <p className="text-red-600 text-sm mt-1">{errors.message}</p>}
                             </div>
+
                             <PrimaryButton
                                 type="submit"
+                                disabled={processing}
                                 className="bg-[#567C8D] hover:bg-[#2F4156] text-white font-medium px-6 py-3 rounded-xl shadow-md transition-all w-full"
                             >
                                 Enviar mensaje

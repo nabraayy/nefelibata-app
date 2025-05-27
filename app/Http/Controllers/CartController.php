@@ -25,27 +25,32 @@ class CartController extends Controller
 
     // Añadir producto al carrito
     public function add(Request $request)
-    {
-            $product = Product::findOrFail($request->product_id);
+{
+    $product = Product::findOrFail($request->product_id);
 
-        $cart = session()->get('cart', []);
+    $cart = session()->get('cart', []);
 
-        if (isset($cart[$product->id])) {
-            $cart[$product->id]['quantity'] += 1;
-        } else {
-            $cart[$product->id] = [
-                'id' => $product->id,
-                'name' => $product->name,
-                'price' => (float) $product->price,
-                'image' => $product->image,
-                'quantity' => 1,
-            ];
-        }
+    $price = $product->discount && $product->discount > 0
+        ? round($product->price * (1 - $product->discount / 100), 2)
+        : (float) $product->price;
 
-        session()->put('cart', $cart);
-
-        return redirect()->back()->with('message', 'Producto añadido al carrito.');
+    if (isset($cart[$product->id])) {
+        $cart[$product->id]['quantity'] += 1;
+    } else {
+        $cart[$product->id] = [
+            'id' => $product->id,
+            'name' => $product->name,
+            'price' => $price,
+            'image' => $product->image,
+            'quantity' => 1,
+        ];
     }
+
+    session()->put('cart', $cart);
+
+    return redirect()->back()->with('message', 'Producto añadido al carrito.');
+}
+
 
     // Eliminar producto del carrito
     public function remove(Request $request)

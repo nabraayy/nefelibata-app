@@ -11,6 +11,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\MessageController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -48,10 +49,13 @@ Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::get('/contact', function () {
     return Inertia::render('ContactPages/Contact');
 })->name('contact');
-/*
+
 Route::get('/cart', function () {
     return Inertia::render('ProductPages/Cart');
-})->name('cart');*/
+})->name('cart');
+Route::post('/contact', [MessageController::class, 'store'])->name('contact.store');
+
+Route::get('/admin/messages', [MessageController::class, 'index'])->middleware(['auth'])->name('admin.messages');
 
 
 
@@ -76,7 +80,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
     Route::post('/admin/orders/{order}/update-status', [AdminController::class, 'updateOrderStatus'])->name('admin.orders.updateStatus');
-    Route::get('/admin/messages', [AdminController::class, 'messages'])->name('admin.messages');
+    /*Route::get('/admin/messages', [AdminController::class, 'messages'])->name('admin.messages');*/
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -94,9 +98,13 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+   
+
+
 });
 
-
+ Route::get('/products/offers', [ProductController::class, 'offers'])->name('products.offers');
+Route::get('/offers', [ProductController::class, 'offers'])->name('offers');
 
 
 require __DIR__.'/auth.php';

@@ -1,18 +1,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage } from '@inertiajs/react';
-import React from 'react';
 import Footer from "@/Components/Footer";
 
 export default function AdminMessages() {
-    const { auth } = usePage().props;
+    const { auth, messages } = usePage().props;
     const user = auth.user;
-
-    // Mensajes simulados
-    const messages = [
-        { id: 1, name: "Laura Pérez", email: "laura@example.com", message: "Hola, estoy interesada en vuestro servicio." },
-        { id: 2, name: "Carlos Ruiz", email: "carlos@example.com", message: "¿Puedo personalizar mis productos?" },
-        { id: 3, name: "Marta López", email: "marta@example.com", message: "Gracias por la atención al cliente, muy buen trato." },
-    ];
 
     return (
         <AuthenticatedLayout
@@ -40,7 +32,8 @@ export default function AdminMessages() {
                                             <p className="font-semibold text-[#2F4156]">{msg.name}</p>
                                             <span className="text-sm text-[#567C8D]">{msg.email}</span>
                                         </div>
-                                        <p className="text-[#2F4156] text-sm">{msg.message}</p>
+                                        <p className="text-[#2F4156] text-sm">{msg.subject}</p>
+                                        <p className="text-[#2F4156] text-sm mt-1">{msg.message}</p>
                                     </div>
                                 ))
                             ) : (

@@ -30,10 +30,11 @@ class ProductController extends Controller
                 'name' => 'required|string|max:255',
                 'price' => 'required|numeric',
                 'image' => 'required|string',
-                'category' => 'required|string|max:255', 
+                'category' => 'required|string|max:255',
+                 'discount' => 'nullable|integer|min:0|max:100',
             ]);
 
-            Product::create($request->only('name', 'price', 'image', 'category'));
+            Product::create($request->only('name', 'price', 'image', 'category','description', 'gallery', 'discount'));
 
             return redirect()->route('admin.products.index')->with('message', 'Producto creado.');
         }
@@ -49,9 +50,10 @@ class ProductController extends Controller
                 'name' => 'required|string|max:255',
                 'price' => 'required|numeric',
                 'image' => 'required|string',
+                 'discount' => 'nullable|integer|min:0|max:100',
             ]);
 
-            $product->update($request->only('name', 'price', 'image'));
+            $product->update($request->only('name', 'price', 'image','category', 'description', 'gallery', 'discount'));
 
             return redirect()->route('admin.products.index')->with('message', 'Producto actualizado.');
         }
@@ -61,6 +63,14 @@ class ProductController extends Controller
             $product->delete();
 
             return redirect()->route('admin.products.index')->with('message', 'Producto eliminado.');
+        }
+        public function offers()
+        {
+            $products = Product::where('discount', '>', 0)->get();
+
+            return Inertia::render('ProductPages/Offers', [
+                'products' => $products,
+            ]);
         }
 
 

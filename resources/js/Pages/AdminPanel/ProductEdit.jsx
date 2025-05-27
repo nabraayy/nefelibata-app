@@ -61,6 +61,16 @@ export default function ProductEdit() {
                                 className="w-full border border-[#C8D9E6] rounded-xl px-4 py-2 shadow-sm focus:ring-2 focus:ring-[#567C8D] transition"
                             />
                         </div>
+                        <div>
+                        <label className="block text-sm font-semibold text-[#2F4156] mb-1">Descuento (%)</label>
+                        <input
+                            type="number"
+                            name="discount"
+                            value={form.discount || ''}
+                            onChange={handleChange}
+                            className="w-full border border-[#C8D9E6] rounded-xl px-4 py-2 shadow-sm focus:ring-2 focus:ring-[#567C8D] transition"
+                        />
+                        </div>
 
                         <button
                             type="submit"

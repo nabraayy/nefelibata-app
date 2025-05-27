@@ -126,9 +126,21 @@ export default function Products() {
                             <h3 className="text-md font-semibold text-[#2F4156] mb-1">
                             {product.name}
                             </h3>
-                            <p className="text-sm text-[#567C8D] font-medium">
-                            {parseFloat(product.price).toFixed(2)} €
-                            </p>
+                           {product.discount && product.discount > 0 ? (
+  <div className="text-sm font-medium">
+    <span className="line-through text-red-500 mr-2">
+      {parseFloat(product.price).toFixed(2)} €
+    </span>
+    <span className="text-green-600 font-bold">
+      {(product.price * (1 - product.discount / 100)).toFixed(2)} €
+    </span>
+  </div>
+) : (
+  <p className="text-sm text-[#567C8D] font-medium">
+    {parseFloat(product.price).toFixed(2)} €
+  </p>
+)}
+
                         </div>
                         ))}
                     </div>

@@ -50,7 +50,7 @@ export default function Dashboard() {
       confirmButton: 'px-6 py-2 font-semibold',
     },
   }).then(() => {
-    window.location.href = route('products');
+    window.location.href = route('offers'); // Redirige a la página de ofertas
   });
 };
     return (
@@ -129,7 +129,7 @@ export default function Dashboard() {
                     </p>
 
                     <PrimaryButton
-                    href={route('products')} // Puedes dejarlo así, sin la ruta .offers
+                    href={route('offers')} // Puedes dejarlo así, sin la ruta .offers
                     className="text-lg px-8 py-4 shadow-md hover:shadow-lg transition bg-[#567C8D] hover:bg-[#2F4156]"
                     >
                     Ver ofertas ahora
@@ -261,7 +261,7 @@ export default function Dashboard() {
                 </div>
 
                 <Link
-                    href={route('products')}
+                    href={route('offers')}
                     className="block mt-4 text-center font-medium text-white bg-[#567C8D] hover:bg-[#2F4156] rounded-lg px-6 py-2 transition-all"
                 >
                     Ver ofertas
