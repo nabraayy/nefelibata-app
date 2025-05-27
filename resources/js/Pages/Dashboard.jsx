@@ -6,18 +6,21 @@ import { useState, useEffect } from 'react';
 import Countdown from 'react-countdown';
 import { motion } from 'framer-motion';
 import { Typewriter } from 'react-simple-typewriter';
-import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import PrimaryButton from '@/Components/PrimaryButton';
 import Footer from "@/Components/Footer";
+import ReviewForm from '@/Components/ReviewForm';
+
 
 export default function Dashboard() {
     const user = usePage().props.auth.user;
     const [darkMode, setDarkMode] = useState(false);
     const [showProductPopup, setShowProductPopup] = useState(true);
-
+    const { props } = usePage();
+    const initialReviews = props.reviews || [];
+    const [reviews, setReviews] = useState(props.reviews || []);
 
     const toggleDarkMode = () => setDarkMode(!darkMode);
     const [showFlash, setShowFlash] = useState(true);
@@ -61,45 +64,6 @@ export default function Dashboard() {
                 className="w-full h-[90vh] bg-cover bg-center relative flex items-center justify-center text-white px-6 overflow-hidden"
                 style={{ backgroundImage: "url('/nube4.png')" }}
                 >
-                
-                <Particles
-                    id="tsparticles"
-                    init={particlesInit}
-                    className="absolute inset-0 z-0"
-                    options={{
-                    background: { color: { value: 'transparent' } },
-                    fpsLimit: 60,
-                    interactivity: {
-                        events: {
-                        onHover: { enable: true, mode: 'repulse' },
-                        resize: true
-                        },
-                        modes: { repulse: { distance: 80, duration: 0.4 } }
-                    },
-                    particles: {
-                        color: { value: '#e4d4c8' },
-                        links: {
-                        enable: true,
-                        distance: 120,
-                        color: '#a47551',
-                        opacity: 0.2,
-                        width: 1
-                        },
-                        move: {
-                        enable: true,
-                        speed: 0.6,
-                        direction: 'none',
-                        outModes: { default: 'bounce' }
-                        },
-                        number: { value: 30, density: { enable: true, area: 800 } },
-                        opacity: { value: 0.15 },
-                        shape: { type: 'circle' },
-                        size: { value: { min: 1, max: 3 } }
-                    },
-                    detectRetina: true
-                    }}
-                />
-
                 
                 <div className="absolute inset-0 bg-black/40 z-10"></div>
 
@@ -218,67 +182,41 @@ export default function Dashboard() {
 
 
 {/* Opiniones */}
-       <section
-        className="bg-[#F5EFEB] py-24 px-6 relative overflow-hidden"
-        style={{ backgroundImage: "url('/nube3.png')" }}
-        data-aos="fade-up"
-        >
-        <h2 className="text-4xl font-extrabold text-center text-[#2F4156] mb-12">
-            Opiniones de nuestros clientes
-        </h2>
+            <section className="bg-[#F5EFEB] py-24 px-6 relative overflow-hidden" style={{ backgroundImage: "url('/nube3.png')" }} data-aos="fade-up">
+                <h2 className="text-4xl font-extrabold text-center text-[#2F4156] mb-12">
+                    Opiniones de nuestros clientes
+                </h2>
 
-        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
-            {[
-            {
-                name: "Laura Martínez",
-                rating: 5,
-                comment: "Entrega rápida y productos de alta calidad. ¡Volveré a comprar!",
-            },
-            {
-                name: "Carlos López",
-                rating: 4,
-                comment: "Me encantó el diseño de la tienda y la atención al cliente. Muy recomendable.",
-            },
-            {
-                name: "Sofía Romero",
-                rating: 5,
-                comment: "Los mejores precios del mercado. El portátil llegó en perfectas condiciones.",
-            }
-            ].map((review, i) => (
-            <div
-                key={i}
-                className="bg-white/90 backdrop-blur border border-[#C8D9E6] p-6 rounded-3xl shadow-md hover:shadow-2xl transform hover:-translate-y-2 hover:scale-[1.02] transition-all duration-500"
-                data-aos="fade-up"
-                data-aos-delay={i * 100}
-            >
-                <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-lg text-[#2F4156]">{review.name}</h3>
-                <div className="flex gap-1 text-yellow-400">
-                    {Array.from({ length: 5 }).map((_, j) => (
-                    <svg
-                        key={j}
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill={j < review.rating ? "currentColor" : "none"}
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        className="w-5 h-5"
-                    >
-                        <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.518 4.674a1 1 0 00.95.69h4.911c.969 0 1.371 1.24.588 1.81l-3.976 2.89a1 1 0 00-.364 1.118l1.518 4.674c.3.921-.755 1.688-1.54 1.118l-3.976-2.89a1 1 0 00-1.176 0l-3.976 2.89c-.784.57-1.838-.197-1.539-1.118l1.518-4.674a1 1 0 00-.364-1.118l-3.976-2.89c-.783-.57-.38-1.81.588-1.81h4.911a1 1 0 00.95-.69l1.518-4.674z"
-                        />
-                    </svg>
-                    ))}
-                </div>
-                </div>
-                <p className="text-sm text-[#2F4156] italic">"{review.comment}"</p>
-            </div>
-            ))}
-        </div>
-        </section>
+                {user && (
+                <ReviewForm onNewReview={(review) => setReviews([review, ...reviews])} />
+                )}
 
+
+                <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 mt-12">
+                    {reviews?.length > 0 ? (
+                        reviews.map((review, i) => (
+                            <div key={review.id} className="bg-white/90 backdrop-blur border border-[#C8D9E6] p-6 rounded-3xl shadow-md hover:shadow-2xl transform hover:-translate-y-2 hover:scale-[1.02] transition-all duration-500" data-aos="fade-up" data-aos-delay={i * 100}>
+                                <div className="flex items-center justify-between mb-4">
+                                    <h3 className="font-semibold text-lg text-[#2F4156]">{review.user.name}</h3>
+                                    <div className="flex gap-1 text-yellow-400">
+                                        {Array.from({ length: 5 }).map((_, j) => (
+                                            <svg key={j} xmlns="http://www.w3.org/2000/svg" fill={j < review.rating ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.518 4.674a1 1 0 00.95.69h4.911c.969 0 1.371 1.24.588 1.81l-3.976 2.89a1 1 0 00-.364 1.118l1.518 4.674c.3.921-.755 1.688-1.54 1.118l-3.976-2.89a1 1 0 00-1.176 0l-3.976 2.89c-.784.57-1.838-.197-1.539-1.118l1.518-4.674a1 1 0 00-.364-1.118l-3.976-2.89c-.783-.57-.38-1.81.588-1.81h4.911a1 1 0 00.95-.69l1.518-4.674z" />
+                                            </svg>
+                                        ))}
+                                    </div>
+                                </div>
+                                <p className="text-sm text-[#2F4156] italic">"{review.comment}"</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="text-center text-[#2F4156] col-span-full">Aún no hay opiniones de usuarios.</p>
+                    )}
+                </div>
+            </section>
+
+
+         
 
 <Footer />
        

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
-
+use App\Http\Controllers\ReviewController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -22,11 +22,15 @@ Route::get('/', function () {
 });
 
 
+Route::middleware(['auth'])->post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard')->middleware(['auth', 'verified']);
+
+
+
+
+Route::get('/dashboard', [ReviewController::class, 'dashboard'])->name('dashboard');
+
 
 
 Route::middleware('auth','verified')->group(function () {
@@ -64,10 +68,10 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 });
 
 
-
+/*
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', fn() => Inertia::render('Dashboard'))->name('dashboard');
-});
+});*/
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');

@@ -36,12 +36,13 @@
         "react-countdown": "^2.3.6",
         "react-simple-typewriter": "^5.0.1",
         "react-slick": "^0.30.3",
-        "react-tsparticles": "^2.12.2",
+        "react-tsparticles": "^2.12.0",
         "slick-carousel": "^1.8.1",
         "sweetalert2": "^11.21.2",
         "sweetalert2-react-content": "^5.1.0",
         "swiper": "^11.2.6",
         "tsparticles": "^3.8.1",
-        "typeit": "^8.8.7"
+        "typeit": "^8.8.7",
+        "ziggy-js": "^2.5.3"
     }
 }
