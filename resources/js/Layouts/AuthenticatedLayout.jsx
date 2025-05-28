@@ -8,8 +8,8 @@ import { ShoppingCart } from 'lucide-react';
 
 
 export default function AuthenticatedLayout({ header, children }) {
-    const user = usePage().props.auth.user;
-
+    const user = usePage().props.auth?.user;
+    
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
        
@@ -62,7 +62,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 </NavLink>
                             </div>
                             <div className="hidden sm:ms-10 sm:flex items-center relative group">
-                                {user.role === 'admin' && (
+                                {user?.role === 'admin' && (
                                     <div className="relative">
                                         <button
                                             className="text-gray-700 hover:text-black font-medium flex items-center gap-1"
@@ -130,7 +130,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                                 type="button"
                                                 className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
                                             >
-                                                {user.name}
+                                                {user?.name}
 
                                                 <svg
                                                     className="-me-0.5 ms-2 h-4 w-4"
@@ -227,10 +227,10 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div className="border-t border-gray-200 pb-1 pt-4">
                         <div className="px-4">
                             <div className="text-base font-medium text-gray-800">
-                                {user.name}
+                                {user?.name}
                             </div>
                             <div className="text-sm font-medium text-gray-500">
-                                {user.email}
+                                {user?.email}
                             </div>
                         </div>
 
