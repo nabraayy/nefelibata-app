@@ -23,7 +23,7 @@ Route::get('/', function () {
 });
 
 
-Route::middleware(['auth'])->post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+Route::middleware('auth')->post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 
 
 

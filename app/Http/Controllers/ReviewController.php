@@ -7,18 +7,20 @@ use App\Models\Review;
 use Inertia\Inertia;
 class ReviewController extends Controller
 {
-    public function store(Request $request)
+   public function store(Request $request)
 {
     $request->validate([
         'rating' => 'required|integer|min:1|max:5',
-        'comment' => 'required|string|max:1000',
+        'comment' => 'required|string|max:500',
     ]);
 
-    $review = $request->user()->reviews()->create($request->only('rating', 'comment'));
+    Review::create([
+        'user_id' => auth()->id(), // Asegura que se use el ID del usuario autenticado
+        'rating' => $request->rating,
+        'comment' => $request->comment,
+    ]);
 
-    $review->load('user'); // Para que venga con el nombre del usuario
-
-   return response()->json(['review' => $review]);
+    return redirect()->back()->with('success', 'Gracias por tu opinión.');
 }
 public function dashboard()
 {

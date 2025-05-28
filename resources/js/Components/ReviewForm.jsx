@@ -7,22 +7,18 @@ export default function ReviewForm({ onNewReview }) {
     });
 
     const submit = (e) => {
-    e.preventDefault();
+        e.preventDefault();
 
-    fetch('/reviews', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-        },
-        body: JSON.stringify(data),
-    })
-    .then((res) => res.json())
-    .then((json) => {
-        onNewReview(json.review);
-        reset();
-    });
-};
+        post(route('reviews.store'), {
+            onSuccess: () => {
+                onNewReview({
+                    user: { name: 'Tú' }, // Opcional: puedes omitirlo si haces reload
+                    ...data,
+                });
+                reset();
+            },
+        });
+    };
 
     return (
         <form onSubmit={submit} className="bg-white p-6 rounded-xl shadow-lg max-w-xl mx-auto mt-12">
