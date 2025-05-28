@@ -179,6 +179,36 @@ export default function Dashboard() {
         </section>
 
 
+<section className="py-24 px-6 sm:px-10 lg:px-20 bg-[#F5EFEB]" data-aos="fade-up">
+  <div className="max-w-4xl mx-auto bg-white/90 backdrop-blur-lg border border-[#C8D9E6] p-10 rounded-3xl shadow-xl hover:scale-[1.01] transition-transform duration-300">
+    <h2 className="text-4xl sm:text-5xl font-extrabold text-[#2F4156] mb-6 text-center">🔥 Producto del Día</h2>
+
+    <div className="flex flex-col md:flex-row items-center justify-between gap-10">
+      <img
+        src="/portatil.png"
+        alt="Producto del día"
+        className="h-48 md:h-60 object-contain rounded-xl"
+      />
+
+      <div className="text-left">
+        <h3 className="text-2xl font-bold text-[#567C8D] mb-2">Portátil ASUS Zen</h3>
+        <p className="text-[#2F4156] text-lg mb-2">
+          <span className="text-[#D9534F] font-bold">30% de descuento</span> solo por hoy
+        </p>
+        <p className="text-sm text-[#2F4156] mb-4">
+          Procesador Intel i7, 16GB RAM, 512GB SSD. Ideal para productividad y diseño.
+        </p>
+
+        <PrimaryButton
+          onClick={handleProductDetails}
+          className="text-sm px-6 py-3 bg-[#567C8D] hover:bg-[#2F4156] transition"
+        >
+          Ver más
+        </PrimaryButton>
+      </div>
+    </div>
+  </div>
+</section>
 
 
 {/* Opiniones */}
@@ -269,51 +299,6 @@ export default function Dashboard() {
                 </div>
             </div>
             )}
-{/* Producto del día */}            
-            {showProductPopup && (
-            <div className="fixed bottom-6 left-6 z-50 w-full max-w-sm animate-fade-in-up">
-                <div className="relative bg-white/90 backdrop-blur-lg border border-[#C8D9E6] p-6 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-300">
-                {/* Botón de cerrar */}
-                <button
-                    onClick={() => setShowProductPopup(false)}
-                    className="absolute top-2 right-3 text-[#567C8D] hover:text-[#2F4156] text-xl font-bold"
-                    aria-label="Cerrar popup"
-                >
-                    ×
-                </button>
-
-                {/* Contenido */}
-                <h2 className="text-2xl font-extrabold text-[#2F4156] mb-4">
-                    🔥 Producto del día
-                </h2>
-
-                <img
-                    src="/portatil.png"
-                    alt="Producto del día"
-                    className="h-32 mx-auto mb-4 object-contain"
-                />
-
-                <h3 className="text-lg font-semibold text-[#567C8D] mb-1">
-                    Portátil ASUS Zen
-                </h3>
-
-                <p className="text-sm text-[#2F4156] mb-4">
-                    <span className="text-[#D9534F] font-bold">30% de descuento</span> solo por hoy
-                </p>
-
-                <PrimaryButton
-                    onClick={handleProductDetails}
-                    className="text-sm px-6 py-3 bg-[#567C8D] hover:bg-[#2F4156] transition"
-                >
-                    Ver más
-                </PrimaryButton>
-                </div>
-            </div>
-            )}
-
-
-
-
             </AuthenticatedLayout>
         </div>
     );
