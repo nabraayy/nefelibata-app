@@ -12,6 +12,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\AdminUserController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -56,6 +57,9 @@ Route::get('/cart', function () {
 Route::post('/contact', [MessageController::class, 'store'])->name('contact.store');
 
 Route::get('/admin/messages', [MessageController::class, 'index'])->middleware(['auth'])->name('admin.messages');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
+});
 
 
 
@@ -104,6 +108,15 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
 
 });
+
+
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+});
+
 
  Route::get('/products/offers', [ProductController::class, 'offers'])->name('products.offers');
 Route::get('/offers', [ProductController::class, 'offers'])->name('offers');

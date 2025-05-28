@@ -1,5 +1,5 @@
 import React from 'react';
-import { Head, usePage } from '@inertiajs/react';
+import { Head, usePage,Link } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import Footer from "@/Components/Footer";
 
@@ -38,12 +38,21 @@ export default function AdminDashboard() {
                         { label: 'Ventas Totales', value: `${Number(totalSales).toFixed(2)} €` },
                         { label: 'Pedidos', value: orders },
                         { label: 'Productos', value: products },
-                        { label: 'Usuarios', value: users }
+                        { label: 'Usuarios', value: users, link: route('admin.users') }
                     ].map((metric, idx) => (
-                        <div key={idx} className="bg-white/80 backdrop-blur border border-[#C8D9E6] p-6 rounded-2xl shadow-md text-center hover:shadow-lg transition">
-                            <h2 className="text-2xl font-bold mb-1">{metric.value}</h2>
-                            <p className="text-sm text-[#567C8D]">{metric.label}</p>
-                        </div>
+                         metric.link ? (
+                        <Link key={idx} href={metric.link} className="block">
+                            <div className="bg-white/80 backdrop-blur border border-[#C8D9E6] p-6 rounded-2xl shadow-md text-center hover:shadow-lg transition">
+                                <h2 className="text-2xl font-bold mb-1">{metric.value}</h2>
+                                <p className="text-sm text-[#567C8D]">{metric.label}</p>
+                            </div>
+                            </Link>
+                        ) : (
+                            <div key={idx} className="bg-white/80 backdrop-blur border border-[#C8D9E6] p-6 rounded-2xl shadow-md text-center hover:shadow-lg transition">
+                                <h2 className="text-2xl font-bold mb-1">{metric.value}</h2>
+                                <p className="text-sm text-[#567C8D]">{metric.label}</p>
+                            </div>
+                        )
                     ))}
                 </div>
 

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderStatusUpdated;
 
 
+
 class AdminController extends Controller
 {
     public function index()
@@ -41,6 +42,14 @@ class AdminController extends Controller
     ]);
 
     }
+    public function users()
+{
+    $users = User::latest()->get();
+
+    return Inertia::render('AdminPanel/Users', [
+        'users' => $users,
+    ]);
+}
     
 
     
@@ -81,4 +90,23 @@ class AdminController extends Controller
     public function messages() {
         return Inertia::render('AdminPanel/Messages');
     }
+    public function editUser(User $user) {
+    return Inertia::render('AdminPanel/EditUser', ['user' => $user]);
+}
+
+public function updateUser(Request $request, User $user) {
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+        
+    ]);
+
+    $user->update($request->only('name', 'email', 'role'));
+    return Redirect::route('admin.users.index')->with('success', 'Usuario actualizado.');
+}
+
+public function destroyUser(User $user) {
+    $user->delete();
+    return Redirect::route('admin.users.index')->with('success', 'Usuario eliminado.');
+}
 }
