@@ -33,7 +33,7 @@ class AdminUserController extends Controller
 
         $user->update($request->only('name', 'email', 'role'));
 
-        return redirect()->route('admin.users.index')->with('success', 'Usuario actualizado.');
+        return redirect()->route('admin.users')->with('success', 'Usuario actualizado.');
     }
 
     public function destroy(User $user)
