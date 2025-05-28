@@ -8,6 +8,8 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderStatusUpdated;
 
 class OrderController extends Controller
 {
@@ -97,6 +99,21 @@ class OrderController extends Controller
     Session::forget('cart');
 
     return redirect()->route('order.confirmed');
+}
+public function updateStatus(Request $request, Order $order)
+{
+    $request->validate([
+        'status' => 'required|in:pendiente,pagada,enviada'
+    ]);
+
+    $order->status = $request->status;
+    $order->save();
+
+    // Enviar correo al cliente
+    Mail::to($order->user->email)->send(new OrderStatusUpdated($order));
+
+   return back()->with('status_updated', 'El estado de tu pedido ha sido actualizado.');
+
 }
 
 

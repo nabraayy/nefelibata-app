@@ -24,5 +24,12 @@ class AppServiceProvider extends ServiceProvider
                 'user' => Auth::check() ? Auth::user() : null,
             ],
         ]);
+         Inertia::share([
+        'flash' => function () {
+            return [
+                'status_updated' => session('status_updated'),
+            ];
+        },
+    ]);
     }
 }

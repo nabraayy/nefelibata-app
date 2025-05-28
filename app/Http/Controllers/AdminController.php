@@ -50,16 +50,22 @@ class AdminController extends Controller
         ]);
     }
     public function updateOrderStatus(Request $request, Order $order)
-    {
-        $request->validate([
-            'status' => 'required|string|in:pendiente,pagada,enviada',
-        ]);
+{
+    $request->validate([
+        'status' => 'required|string|in:pendiente,pagada,enviada',
+    ]);
 
-        $order->status = $request->status;
-        $order->save();
+    $order->status = $request->status;
+    $order->save();
 
-        return back()->with('success', 'Estado actualizado correctamente.');
+    // Enviar correo al usuario
+    if ($order->user && $order->user->email) {
+        Mail::to($order->user->email)->send(new OrderStatusUpdated($order));
     }
+
+    // Mensaje flash para mostrar en frontend del admin
+    return back()->with('status_updated', "El estado del pedido #{$order->id} fue actualizado a '{$order->status}' y el cliente ha sido notificado.");
+}
     public function showOrder(Order $order)
 {
     $order->load('items', 'user');
