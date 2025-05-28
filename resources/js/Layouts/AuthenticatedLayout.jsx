@@ -154,6 +154,9 @@ export default function AuthenticatedLayout({ header, children }) {
                                         >
                                             Profile
                                         </Dropdown.Link>
+                                         <Dropdown.Link href={route('orders.index')}>
+                                            Mis pedidos
+                                        </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route('logout')}
                                             method="post"

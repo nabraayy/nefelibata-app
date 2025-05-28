@@ -70,6 +70,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/orders/{order}/update-status', [AdminController::class, 'updateStatus'])->name('orders.updateStatus');
     Route::get('/orders/{order}', [AdminController::class, 'showOrder'])->name('orders.show');
 });
+Route::get('/orders', [OrderController::class, 'index'])->middleware(['auth'])->name('orders.index');
+
 
 
 /*

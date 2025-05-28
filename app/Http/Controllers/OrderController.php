@@ -11,6 +11,17 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
+    public function index()
+{
+    $orders = Order::with('items')
+        ->where('user_id', Auth::id())
+        ->latest()
+        ->get();
+
+    return Inertia::render('Orders/Index', [
+        'orders' => $orders,
+    ]);
+}
     public function checkout()
     {
         return Inertia::render('CheckOutPages/Checkout', [
@@ -54,7 +65,8 @@ class OrderController extends Controller
 
         Session::forget('cart');
 
-        return redirect()->route('order.confirmed')->with('success', 'Pedido realizado correctamente.');
+        return redirect()->back()->with('success', 'Pedido realizado correctamente.');
+
     }
     public function paypalComplete(Request $request)
 {
@@ -86,5 +98,6 @@ class OrderController extends Controller
 
     return redirect()->route('order.confirmed');
 }
+
 
 }
