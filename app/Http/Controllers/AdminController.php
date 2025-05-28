@@ -8,6 +8,9 @@ use Inertia\Inertia;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderStatusUpdated;
+
 
 class AdminController extends Controller
 {
