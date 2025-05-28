@@ -222,6 +222,37 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Dashboard
                         </ResponsiveNavLink>
+                                    </div>
+                <div className="space-y-1 pb-3 pt-2 px-4 text-sm">
+                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                            Inicio
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('products')} active={route().current('products')}>
+                            Productos
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('contact')} active={route().current('contact')}>
+                            Contacto
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('cart')} active={route().current('cart')}>
+                            Carrito
+                        </ResponsiveNavLink>
+
+                        {user?.role === 'admin' && (
+                            <>
+                                <ResponsiveNavLink href={route('admin.dashboard')} active={route().current('admin.dashboard')}>
+                                    Panel Admin
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href={route('admin.products.index')} active={route().current('admin.products.index')}>
+                                    Productos Admin
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href={route('admin.orders')} active={route().current('admin.orders')}>
+                                    Pedidos Admin
+                                </ResponsiveNavLink>
+                                <ResponsiveNavLink href={route('admin.messages')} active={route().current('admin.messages')}>
+                                    Mensajes Admin
+                                </ResponsiveNavLink>
+                            </>
+                        )}
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">
