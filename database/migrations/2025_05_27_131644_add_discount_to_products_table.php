@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-         Schema::table('products', function (Blueprint $table) {
-        $table->unsignedInteger('discount')->default(0);
+         if (!Schema::hasColumn('products', 'discount')) {
+        Schema::table('products', function (Blueprint $table) {
+            $table->integer('discount')->default(0);
         });
+    }
     }
 
     /**
