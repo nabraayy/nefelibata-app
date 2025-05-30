@@ -4,10 +4,15 @@ import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import PrimaryButton from '@/Components/PrimaryButton';
 import Footer from "@/Components/Footer";
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import StripeCard from '@/Components/StripeCard';
+
 
 export default function Checkout() {
     const { auth, cart = [] } = usePage().props;
     const user = auth.user;
+    const stripePromise = loadStripe("pk_test_xxxxxxx"); // tu clave pública real aquí
 
     const totalPrice = cart.reduce((acc, item) => acc + Number(item.price) * item.quantity, 0);
 
@@ -233,14 +238,56 @@ export default function Checkout() {
                                 </label>
                             </div>
                         </div>
-
                         {form.paymentMethod === 'card' && (
-                            <>
-                                <input type="text" name="cardNumber" value={form.cardNumber} onChange={handleChange} placeholder="Número de tarjeta" className="w-full border rounded-lg px-4 py-2 bg-gray-50" />
-                                <input type="text" name="expirationDate" value={form.expirationDate} onChange={handleChange} placeholder="Fecha de expiración" className="w-full border rounded-lg px-4 py-2 bg-gray-50" />
-                            </>
+                            <Elements stripe={stripePromise}>
+                                <StripeCard
+                                    amount={totalPrice}
+                                    user={user}
+                                    onSuccess={(paymentIntent) => {
+                                        const orderItems = cart.map(item => ({
+                                            product_id: item.id,
+                                            quantity: item.quantity,
+                                            price: Number(item.price),
+                                        }));
+
+                                        router.post(route('checkout.store'), {
+                                            ...form,
+                                            cart: orderItems,
+                                            total: totalPrice,
+                                            stripePaymentId: paymentIntent.id,
+                                        }, {
+                                            onSuccess: () => {
+                                                Swal.fire({
+                                                    title: '¡Pedido realizado!',
+                                                    text: 'Tu orden ha sido confirmada correctamente.',
+                                                    icon: 'success',
+                                                    confirmButtonText: 'Ver mis pedidos',
+                                                    customClass: {
+                                                        popup: 'rounded-xl shadow-lg',
+                                                        title: 'text-xl font-bold text-gray-900',
+                                                        htmlContainer: 'text-gray-700',
+                                                        confirmButton: 'bg-black text-white px-4 py-2 rounded hover:bg-gray-800',
+                                                    },
+                                                    buttonsStyling: false,
+                                                }).then(() => {
+                                                    router.visit('/orders');
+                                                });
+                                            },
+                                            onError: () => {
+                                                Swal.fire({
+                                                    title: 'Error',
+                                                    text: 'No se pudo procesar el pago con Stripe.',
+                                                    icon: 'error',
+                                                    confirmButtonText: 'Intentar de nuevo',
+                                                });
+                                            }
+                                        });
+                                    }}
+                                />
+                            </Elements>
                         )}
 
+                        
                         {form.paymentMethod === 'paypal' && (
                             <div id="paypal-button-container" className="pt-2" />
                         )}

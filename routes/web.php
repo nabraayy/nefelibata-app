@@ -113,7 +113,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
 });
 
-
+// Stripe payment routes
+Route::post('/create-payment-intent', [StripePaymentController::class, 'createIntent']);
 
    
 

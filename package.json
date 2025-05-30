@@ -29,6 +29,8 @@
         "@mantine/core": "^8.0.0",
         "@mui/material": "^7.1.0",
         "@paypal/react-paypal-js": "^8.8.3",
+        "@stripe/react-stripe-js": "^3.7.0",
+        "@stripe/stripe-js": "^7.3.1",
         "aos": "^2.3.4",
         "framer-motion": "^12.12.1",
         "lottie-react": "^2.4.1",
