@@ -4,15 +4,13 @@ import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import PrimaryButton from '@/Components/PrimaryButton';
 import Footer from "@/Components/Footer";
-import { loadStripe } from '@stripe/stripe-js';
+import { stripePromise } from './stripePromise';
 import { Elements } from '@stripe/react-stripe-js';
 import StripeCard from '@/Components/StripeCard';
-
 
 export default function Checkout() {
     const { auth, cart = [] } = usePage().props;
     const user = auth.user;
-    const stripePromise = loadStripe("pk_test_xxxxxxx"); // tu clave pública real aquí
 
     const totalPrice = cart.reduce((acc, item) => acc + Number(item.price) * item.quantity, 0);
 
@@ -22,8 +20,6 @@ export default function Checkout() {
         address: '',
         city: '',
         paymentMethod: 'card',
-        cardNumber: '',
-        expirationDate: '',
     });
 
     const handleChange = (e) => {
@@ -31,83 +27,25 @@ export default function Checkout() {
         setForm({ ...form, [name]: value });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        const result = await Swal.fire({
-            title: '¿Confirmar pedido?',
-            text: `Vas a pagar un total de ${totalPrice.toFixed(2)} €. ¿Deseas continuar?`,
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Sí, confirmar',
-            cancelButtonText: 'Cancelar',
-            customClass: {
-                popup: 'rounded-xl shadow-lg',
-                title: 'text-lg font-semibold text-gray-800',
-                confirmButton: 'bg-black text-white px-4 py-2 rounded hover:bg-gray-800',
-                cancelButton: 'bg-white text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-100',
-            },
-            buttonsStyling: false,
-        });
-
-        if (!result.isConfirmed) return;
-
-        // Mostrar cargando
-        Swal.fire({
-            title: 'Realizando pedido...',
-            text: 'Por favor, espera un momento',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            },
-            customClass: {
-                popup: 'rounded-xl shadow-md',
-                title: 'text-lg text-gray-800',
-            },
-        });
-
-        const orderItems = cart.map(item => ({
-            product_id: item.id,
-            quantity: item.quantity,
-            price: Number(item.price),
-        }));
-
-        router.post(route('checkout.store'), {
-            ...form,
-            cart: orderItems,
-            total: totalPrice,
-        }, {
-            onSuccess: () => {
+    const validateForm = () => {
+        const requiredFields = ['name', 'email', 'address', 'city'];
+        for (let field of requiredFields) {
+            if (!form[field]) {
                 Swal.fire({
-                    title: '¡Pedido realizado!',
-                    text: 'Tu orden ha sido confirmada correctamente.',
-                    icon: 'success',
-                    confirmButtonText: 'Ver mis pedidos',
+                    title: 'Campo obligatorio',
+                    text: `Por favor completa el campo: ${field}`,
+                    icon: 'warning',
+                    confirmButtonText: 'Entendido',
                     customClass: {
                         popup: 'rounded-xl shadow-lg',
-                        title: 'text-xl font-bold text-gray-900',
-                        htmlContainer: 'text-gray-700',
-                        confirmButton: 'bg-black text-white px-4 py-2 rounded hover:bg-gray-800',
-                    },
-                    buttonsStyling: false,
-                }).then(() => {
-                    router.visit('/orders'); // Puedes cambiar esta ruta si es necesario
-                });
-            },
-            onError: () => {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Ha ocurrido un error al procesar tu pedido.',
-                    icon: 'error',
-                    confirmButtonText: 'Intentar de nuevo',
-                    customClass: {
-                        popup: 'rounded-xl shadow-lg',
-                        confirmButton: 'bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700',
+                        confirmButton: 'bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600',
                     },
                     buttonsStyling: false,
                 });
+                return false;
             }
-        });
+        }
+        return true;
     };
 
     useEffect(() => {
@@ -138,9 +76,7 @@ export default function Checkout() {
                         createOrder: (data, actions) => {
                             return actions.order.create({
                                 purchase_units: [{
-                                    amount: {
-                                        value: totalPrice.toFixed(2),
-                                    },
+                                    amount: { value: totalPrice.toFixed(2) },
                                 }],
                             });
                         },
@@ -159,6 +95,19 @@ export default function Checkout() {
                                     paypalDetails: details,
                                 });
                             });
+                        },
+                        onError: (err) => {
+                            Swal.fire({
+                                title: 'Error de PayPal',
+                                text: 'No se pudo completar el pago con PayPal. Inténtalo de nuevo.',
+                                icon: 'error',
+                                confirmButtonText: 'Cerrar',
+                                customClass: {
+                                    popup: 'rounded-xl shadow-lg',
+                                    confirmButton: 'bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700',
+                                },
+                                buttonsStyling: false,
+                            });
                         }
                     }).render('#paypal-button-container');
                 }
@@ -173,14 +122,10 @@ export default function Checkout() {
     return (
         <AuthenticatedLayout>
             <Head title="Checkout" />
-
             <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 py-12 px-4" style={{ backgroundImage: "url('/nube3.png')" }}>
                 <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
-
-                    {/* Resumen del pedido */}
                     <div className="bg-white rounded-2xl shadow p-6">
                         <h2 className="text-2xl font-bold text-gray-800 mb-6">Resumen del pedido</h2>
-
                         {cart.length > 0 ? (
                             <>
                                 <ul className="divide-y divide-gray-200 space-y-4">
@@ -192,14 +137,10 @@ export default function Checkout() {
                                                 )}
                                                 <div>
                                                     <p className="font-medium text-gray-800">{item.name}</p>
-                                                    <p className="text-sm text-gray-500">
-                                                        {item.quantity} x {Number(item.price).toFixed(2)} €
-                                                    </p>
+                                                    <p className="text-sm text-gray-500">{item.quantity} x {Number(item.price).toFixed(2)} €</p>
                                                 </div>
                                             </div>
-                                            <p className="font-semibold text-gray-800">
-                                                {(item.quantity * Number(item.price)).toFixed(2)} €
-                                            </p>
+                                            <p className="font-semibold text-gray-800">{(item.quantity * Number(item.price)).toFixed(2)} €</p>
                                         </li>
                                     ))}
                                 </ul>
@@ -212,11 +153,7 @@ export default function Checkout() {
                         )}
                     </div>
 
-                    {/* Formulario de pago */}
-                    <form
-                        onSubmit={handleSubmit}
-                        className="bg-white rounded-2xl shadow p-6 space-y-6"
-                    >
+                    <div className="bg-white rounded-2xl shadow p-6 space-y-6">
                         <h2 className="text-2xl font-bold text-gray-800">Finalizar compra</h2>
 
                         <input type="text" name="name" value={form.name} onChange={handleChange} placeholder="Nombre completo" className="w-full border rounded-lg px-4 py-2 bg-gray-50" required />
@@ -224,80 +161,132 @@ export default function Checkout() {
                         <input type="text" name="address" value={form.address} onChange={handleChange} placeholder="Dirección" className="w-full border rounded-lg px-4 py-2 bg-gray-50" required />
                         <input type="text" name="city" value={form.city} onChange={handleChange} placeholder="Ciudad" className="w-full border rounded-lg px-4 py-2 bg-gray-50" required />
 
-                        <div>
-                            <h3 className="font-semibold mb-2">Método de pago</h3>
-                            <div className="space-y-2 text-sm text-gray-700">
-                                <label className="flex items-center gap-2">
-                                    <input type="radio" name="paymentMethod" value="card" checked={form.paymentMethod === 'card'} onChange={handleChange} /> Tarjeta de crédito
-                                </label>
-                                <label className="flex items-center gap-2">
-                                    <input type="radio" name="paymentMethod" value="paypal" checked={form.paymentMethod === 'paypal'} onChange={handleChange} /> PayPal
-                                </label>
-                                <label className="flex items-center gap-2">
-                                    <input type="radio" name="paymentMethod" value="bank" checked={form.paymentMethod === 'bank'} onChange={handleChange} /> Transferencia bancaria
-                                </label>
-                            </div>
-                        </div>
-                        {form.paymentMethod === 'card' && (
-                            <Elements stripe={stripePromise}>
-                                <StripeCard
-                                    amount={totalPrice}
-                                    user={user}
-                                    onSuccess={(paymentIntent) => {
-                                        const orderItems = cart.map(item => ({
-                                            product_id: item.id,
-                                            quantity: item.quantity,
-                                            price: Number(item.price),
-                                        }));
+                        {totalPrice > 0 ? (
+                            <>
+                                <div>
+                                    <h3 className="font-semibold mb-2">Método de pago</h3>
+                                    <div className="space-y-2 text-sm text-gray-700">
+                                        <label className="flex items-center gap-2">
+                                            <input type="radio" name="paymentMethod" value="card" checked={form.paymentMethod === 'card'} onChange={handleChange} /> Tarjeta de crédito
+                                        </label>
+                                        <label className="flex items-center gap-2">
+                                            <input type="radio" name="paymentMethod" value="paypal" checked={form.paymentMethod === 'paypal'} onChange={handleChange} /> PayPal
+                                        </label>
+                                        <label className="flex items-center gap-2">
+                                            <input type="radio" name="paymentMethod" value="bank" checked={form.paymentMethod === 'bank'} onChange={handleChange} /> Transferencia bancaria
+                                        </label>
+                                    </div>
+                                </div>
 
-                                        router.post(route('checkout.store'), {
-                                            ...form,
-                                            cart: orderItems,
-                                            total: totalPrice,
-                                            stripePaymentId: paymentIntent.id,
-                                        }, {
-                                            onSuccess: () => {
-                                                Swal.fire({
-                                                    title: '¡Pedido realizado!',
-                                                    text: 'Tu orden ha sido confirmada correctamente.',
-                                                    icon: 'success',
-                                                    confirmButtonText: 'Ver mis pedidos',
+                                {form.paymentMethod === 'card' && (
+                                    <Elements stripe={stripePromise}>
+                                        <StripeCard
+                                            amount={totalPrice}
+                                            user={user}
+                                            onSuccess={async (paymentIntent) => {
+                                                if (!validateForm()) return;
+
+                                                const result = await Swal.fire({
+                                                    title: '¿Confirmar pedido?',
+                                                    text: `Vas a pagar un total de ${totalPrice.toFixed(2)} €. ¿Deseas continuar?`,
+                                                    icon: 'question',
+                                                    showCancelButton: true,
+                                                    confirmButtonText: 'Sí, confirmar',
+                                                    cancelButtonText: 'Cancelar',
                                                     customClass: {
                                                         popup: 'rounded-xl shadow-lg',
-                                                        title: 'text-xl font-bold text-gray-900',
-                                                        htmlContainer: 'text-gray-700',
                                                         confirmButton: 'bg-black text-white px-4 py-2 rounded hover:bg-gray-800',
+                                                        cancelButton: 'bg-white text-gray-700 border border-gray-300 px-4 py-2 rounded hover:bg-gray-100',
                                                     },
                                                     buttonsStyling: false,
-                                                }).then(() => {
-                                                    router.visit('/orders');
                                                 });
-                                            },
-                                            onError: () => {
+
+                                                if (!result.isConfirmed) return;
+
                                                 Swal.fire({
-                                                    title: 'Error',
-                                                    text: 'No se pudo procesar el pago con Stripe.',
-                                                    icon: 'error',
-                                                    confirmButtonText: 'Intentar de nuevo',
+                                                    title: 'Realizando pedido...',
+                                                    text: 'Por favor, espera un momento',
+                                                    allowOutsideClick: false,
+                                                    didOpen: () => {
+                                                        Swal.showLoading();
+                                                    },
+                                                    customClass: {
+                                                        popup: 'rounded-xl shadow-md',
+                                                        title: 'text-lg text-gray-800',
+                                                    },
                                                 });
-                                            }
-                                        });
-                                    }}
-                                />
-                            </Elements>
-                        )}
 
-                        
-                        {form.paymentMethod === 'paypal' && (
-                            <div id="paypal-button-container" className="pt-2" />
-                        )}
+                                                const orderItems = cart.map(item => ({
+                                                    product_id: item.id,
+                                                    quantity: item.quantity,
+                                                    price: Number(item.price),
+                                                }));
 
-                        <div className="pt-4">
-                            <PrimaryButton className="w-full justify-center">
-                                Confirmar y pagar {totalPrice.toFixed(2)} €
-                            </PrimaryButton>
-                        </div>
-                    </form>
+                                                router.post(route('checkout.store'), {
+                                                    ...form,
+                                                    cart: orderItems,
+                                                    total: totalPrice,
+                                                    stripePaymentId: paymentIntent.id,
+                                                }, {
+                                                    onSuccess: () => {
+                                                        Swal.fire({
+                                                            title: '¡Pedido realizado!',
+                                                            text: 'Tu orden ha sido confirmada correctamente.',
+                                                            icon: 'success',
+                                                            confirmButtonText: 'Ver mis pedidos',
+                                                            customClass: {
+                                                                popup: 'rounded-xl shadow-lg',
+                                                                title: 'text-xl font-bold text-gray-900',
+                                                                htmlContainer: 'text-gray-700',
+                                                                confirmButton: 'bg-black text-white px-4 py-2 rounded hover:bg-gray-800',
+                                                            },
+                                                            buttonsStyling: false,
+                                                        }).then(() => {
+                                                            router.visit('/orders');
+                                                        });
+                                                    },
+                                                    onError: () => {
+                                                        Swal.fire({
+                                                            title: 'Error',
+                                                            text: 'Ha ocurrido un error al procesar tu pedido.',
+                                                            icon: 'error',
+                                                            confirmButtonText: 'Intentar de nuevo',
+                                                            customClass: {
+                                                                popup: 'rounded-xl shadow-lg',
+                                                                confirmButton: 'bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700',
+                                                            },
+                                                            buttonsStyling: false,
+                                                        });
+                                                    }
+                                                });
+                                            }}
+                                            onError={(errorMessage) => {
+                                                Swal.fire({
+                                                    title: 'Error con el pago',
+                                                    text: errorMessage || 'Ha ocurrido un problema con tu tarjeta.',
+                                                    icon: 'error',
+                                                    confirmButtonText: 'Entendido',
+                                                    customClass: {
+                                                        popup: 'rounded-xl shadow-lg',
+                                                        confirmButton: 'bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700',
+                                                    },
+                                                    buttonsStyling: false,
+                                                });
+                                            }}
+                                        />
+                                    </Elements>
+                                )}
+
+                                {form.paymentMethod === 'paypal' && (
+                                    <div id="paypal-button-container" className="pt-4"></div>
+                                )}
+                            </>
+                        ) : (
+                            <div className="p-4 text-center text-red-700 border border-red-300 bg-red-100 rounded-md">
+                                El total del carrito debe ser mayor a cero para seleccionar un método de pago.
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
             <Footer />
