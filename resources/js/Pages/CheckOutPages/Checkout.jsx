@@ -12,8 +12,7 @@ import StripeCard from '@/Components/StripeCard';
 export default function Checkout() {
     const { auth, cart = [] } = usePage().props;
     const user = auth.user;
-    const stripePromise = loadStripe("pk_test_xxxxxxx"); // tu clave pública real aquí
-
+    const stripePromise = loadStripe("pk_test_51RUMqhI8RwFLPhvvd8enmc7tPdgWGs6cfk3nCVUjNAH4keRI30VO1Dx3EXMR8LTukxnLHL9JPgCmKVq1FBfewUP300rOAnePhX"); 
     const totalPrice = cart.reduce((acc, item) => acc + Number(item.price) * item.quantity, 0);
 
     const [form, setForm] = useState({
@@ -91,7 +90,7 @@ export default function Checkout() {
                     },
                     buttonsStyling: false,
                 }).then(() => {
-                    router.visit('/orders'); // Puedes cambiar esta ruta si es necesario
+                    router.visit('/orders'); 
                 });
             },
             onError: () => {

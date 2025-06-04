@@ -9,9 +9,9 @@ export default function PrimaryButton({ className = '', disabled, children, href
 
     const content = (
         <>
-            {/* Fondo con imagen nube4 */}
+           
             <span className="absolute inset-0 z-0 bg-[url('/nube4.png')] bg-cover bg-center opacity-80 transition duration-300"></span>
-            {/* Texto en primer plano */}
+            
             <span className="relative z-10">{children}</span>
         </>
     );

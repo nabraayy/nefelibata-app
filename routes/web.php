@@ -120,7 +120,7 @@ Route::post('/create-payment-intent', [StripePaymentController::class, 'createIn
 
 
 
- Route::get('/products/offers', [ProductController::class, 'offers'])->name('products.offers');
+Route::get('/products/offers', [ProductController::class, 'offers'])->name('products.offers');
 Route::get('/offers', [ProductController::class, 'offers'])->name('offers');
 
 

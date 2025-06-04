@@ -88,13 +88,13 @@ class OrderController extends Controller
         OrderItem::create([
             'order_id' => $order->id,
             'product_id' => $item['product_id'],
-            'product_name' => 'N/A', // Puedes cambiarlo si necesitas el nombre
+            'product_name' => 'N/A', 
             'price' => $item['price'],
             'quantity' => $item['quantity'],
         ]);
     }
 
-    // Aquí puedes notificar al admin (email, DB, etc.)
+    
 
     Session::forget('cart');
 

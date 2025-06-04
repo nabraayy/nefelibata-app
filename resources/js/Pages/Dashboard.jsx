@@ -6,7 +6,6 @@ import { useState, useEffect } from 'react';
 import Countdown from 'react-countdown';
 import { motion } from 'framer-motion';
 import { Typewriter } from 'react-simple-typewriter';
-import { loadFull } from 'tsparticles';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -26,14 +25,12 @@ export default function Dashboard() {
     const [showFlash, setShowFlash] = useState(true);
     const MySwal = withReactContent(Swal);
 
-    // Cierra el popup automáticamente después de 1 hora
+    //
     useEffect(() => {
         const timeout = setTimeout(() => setShowFlash(false), 3600 * 1000);
         return () => clearTimeout(timeout);
     }, []);
-    const particlesInit = async (main) => {
-    await loadFull(main);
-    };
+ 
     const handleProductDetails = () => {
   MySwal.fire({
     title: 'Portátil ASUS Zen',
@@ -50,7 +47,7 @@ export default function Dashboard() {
       confirmButton: 'px-6 py-2 font-semibold',
     },
   }).then(() => {
-    window.location.href = route('offers'); // Redirige a la página de ofertas
+    window.location.href = route('offers'); 
   });
 };
     return (
@@ -111,14 +108,14 @@ export default function Dashboard() {
                 className="py-24 px-6 sm:px-10 lg:px-20 bg-[#F5EFEB] text-center relative overflow-hidden"
                 data-aos="fade-up"
                 >
-                {/* Fondo decorativo sutil */}
+               
                 <img
                     src="/nube4.png"
                     alt="Decoración"
                     className="absolute inset-0 w-full h-full object-cover opacity-10 pointer-events-none"
                 />
 
-                {/* Contenido principal */}
+               
                 <div className="relative z-10 max-w-3xl mx-auto bg-white/90 backdrop-blur-lg border border-[#C8D9E6] rounded-3xl p-10 shadow-xl hover:scale-[1.01] transition-transform duration-300">
                     <h2 className="text-4xl sm:text-5xl font-extrabold mb-6 text-[#2F4156] tracking-tight">
                     ¡Ofertas exclusivas de esta semana!
@@ -129,7 +126,7 @@ export default function Dashboard() {
                     </p>
 
                     <PrimaryButton
-                    href={route('offers')} // Puedes dejarlo así, sin la ruta .offers
+                    href={route('offers')} 
                     className="text-lg px-8 py-4 shadow-md hover:shadow-lg transition bg-[#567C8D] hover:bg-[#2F4156]"
                     >
                     Ver ofertas ahora
