@@ -13,6 +13,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\StripePaymentController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -114,7 +115,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 });
 
 // Stripe payment routes
-Route::post('/create-payment-intent', [StripePaymentController::class, 'createIntent']);
+Route::post('/create-payment-intent', [StripePaymentController::class, 'createIntent'])->name('stripe.intent');
 
    
 
