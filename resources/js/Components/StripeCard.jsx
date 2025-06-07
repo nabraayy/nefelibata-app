@@ -12,7 +12,7 @@ export default function StripeCard({ amount, onSuccess, user }) {
 
     useEffect(() => {
         axios.post('/create-payment-intent', {
-            amount: amount * 100
+            amount: Math.round(amount * 100)
         }).then(res => {
             setClientSecret(res.data.clientSecret);
         }).catch(error => {
