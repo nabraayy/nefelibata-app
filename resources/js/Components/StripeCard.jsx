@@ -4,6 +4,7 @@ import axios from 'axios';
 import PrimaryButton from './PrimaryButton';
 import Swal from 'sweetalert2';
 
+
 export default function StripeCard({ amount, onSuccess, user }) {
     const stripe = useStripe();
     const elements = useElements();

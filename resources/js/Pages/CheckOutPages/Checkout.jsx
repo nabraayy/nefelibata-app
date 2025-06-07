@@ -7,12 +7,13 @@ import Footer from "@/Components/Footer";
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import StripeCard from '@/Components/StripeCard';
+import { stripePromise } from '@/stripe/stripe';
+
 
 
 export default function Checkout() {
     const { auth, cart = [] } = usePage().props;
     const user = auth.user;
-    const stripePromise = loadStripe("pk_test_51RUMqhI8RwFLPhvvd8enmc7tPdgWGs6cfk3nCVUjNAH4keRI30VO1Dx3EXMR8LTukxnLHL9JPgCmKVq1FBfewUP300rOAnePhX"); 
     const totalPrice = cart.reduce((acc, item) => acc + Number(item.price) * item.quantity, 0);
 
     const [form, setForm] = useState({
