@@ -7,7 +7,7 @@ import Footer from "@/Components/Footer";
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import StripeCard from '@/Components/StripeCard';
-import { stripePromise } from '@/stripe/stripe';
+import { stripePromise } from './stripe';
 
 
 
