@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import PrimaryButton from '@/Components/PrimaryButton';
 import Footer from "@/Components/Footer";
-import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import StripeCard from '@/Components/StripeCard';
 import { stripePromise } from './stripePromise';
