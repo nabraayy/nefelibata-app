@@ -60,7 +60,7 @@ export default function Welcome({ auth }) {
                                 key={i}
                                 className="absolute rounded-full"
                                 style={{
-                                    backgroundColor: '#e4d4c8', // naranja sólido (opaco)
+                                    backgroundColor: '#e4d4c8', 
                                     width: `${Math.random() * 50 + 30}px`,
                                     height: `${Math.random() * 50 + 30}px`,
                                     top: `${Math.random() * 100}%`,
@@ -108,7 +108,7 @@ export default function Welcome({ auth }) {
                 data-aos="fade-up"
                 >
                 <div className="max-w-[1600px] mx-auto">
-                    {/* Encabezado */}
+                   
                     <div className="mb-20 text-center">
                     <h2 className="text-4xl sm:text-5xl font-extrabold mb-4 relative inline-block text-[#2F4156] after:content-[''] after:absolute after:w-24 after:h-1 after:bg-[#567C8D] after:bottom-0 after:left-1/2 after:-translate-x-1/2">
                         Sobre Nosotros
@@ -119,7 +119,7 @@ export default function Welcome({ auth }) {
                     </div>
 
                     <div className="flex flex-col-reverse lg:flex-row items-center gap-16">
-                    {/* Texto */}
+                    
                     <div className="w-full lg:w-1/2 space-y-6 text-[#2F4156]" data-aos="fade-left">
                         <p className="text-lg leading-relaxed">
                         <strong className="text-[#567C8D]">Nefelibata</strong> es una plataforma <strong>intuitiva, escalable y segura</strong> que permite crear tiendas online en minutos, sin conocimientos técnicos.
@@ -138,7 +138,7 @@ export default function Welcome({ auth }) {
                         </p>
                     </div>
 
-                    {/* Imagen */}
+                    
                     <div className="w-full lg:w-1/2 flex justify-center" data-aos="fade-right">
                         <div className="relative group">
                         <img
@@ -312,14 +312,14 @@ export default function Welcome({ auth }) {
                 style={{ backgroundColor: "#F5EFEB" }}
                 data-aos="fade-up"
               >
-                {/* Título */}
+                
                 <h2 className="text-4xl sm:text-5xl font-extrabold text-center mb-16 text-[#2F4156] relative inline-block after:content-[''] after:absolute after:w-24 after:h-1 after:bg-[#567C8D] after:bottom-0 after:left-1/2 after:-translate-x-1/2">
                   Dónde estamos
                 </h2>
 
-                {/* Contenido */}
+               
                 <div className="grid md:grid-cols-2 gap-12 items-center">
-                  {/* Información */}
+                  
                   <div
                     className="bg-white p-8 rounded-2xl shadow-md border border-[#C8D9E6] text-[#2F4156] space-y-4"
                     data-aos="fade-right"
@@ -371,7 +371,7 @@ export default function Welcome({ auth }) {
                 {/* Footer */}
                 <Footer />
             </div>
-            {/* Animación CSS personalizada */}
+            
             <style>{`
                 @keyframes floatUp {
                     0% {

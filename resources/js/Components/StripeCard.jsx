@@ -4,6 +4,7 @@ import axios from 'axios';
 import PrimaryButton from './PrimaryButton';
 import Swal from 'sweetalert2';
 
+
 export default function StripeCard({ amount, onSuccess, user }) {
     const stripe = useStripe();
     const elements = useElements();
@@ -12,7 +13,7 @@ export default function StripeCard({ amount, onSuccess, user }) {
 
     useEffect(() => {
         axios.post('/create-payment-intent', {
-            amount: amount * 100
+            amount: Math.round(amount * 100)
         }).then(res => {
             setClientSecret(res.data.clientSecret);
         }).catch(error => {

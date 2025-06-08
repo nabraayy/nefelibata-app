@@ -75,7 +75,7 @@ export default function Products() {
         <AuthenticatedLayout>
             <Head title="Productos" />
 
-            {/* Contenedor principal con fondo animado */}
+          
             <div
             className="relative min-h-screen overflow-hidden py-20 px-4 sm:px-8"
             style={{

@@ -10,6 +10,8 @@ class StripePaymentController extends Controller
 {
    public function createIntent(Request $request)
     {
+        \Log::info('Request recibido en createIntent:', $request->all());
+
         $request->validate([
         'amount' => 'required|integer|min:100', // mínimo 1€
     ]);

@@ -15,7 +15,7 @@ class ReviewController extends Controller
     ]);
 
     Review::create([
-        'user_id' => auth()->id(), // Asegura que se use el ID del usuario autenticado
+        'user_id' => auth()->id(), 
         'rating' => $request->rating,
         'comment' => $request->comment,
     ]);

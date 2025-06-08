@@ -12,7 +12,7 @@ class RedirectIfAuthenticated
     {
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                // Redirigir según rol si ya está autenticado
+                
                 return Auth::user()->role === 'admin'
                     ? redirect()->route('admin.dashboard')
                     : redirect()->route('dashboard');

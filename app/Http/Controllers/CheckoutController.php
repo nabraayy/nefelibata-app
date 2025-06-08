@@ -12,7 +12,7 @@ use Stripe\PaymentIntent;
 
 class CheckoutController extends Controller
 {
-    // Mostrar la vista de checkout
+    
     public function index()
     {
         return Inertia::render('CheckOutPages/Checkout', [
