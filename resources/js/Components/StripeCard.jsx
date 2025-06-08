@@ -64,10 +64,19 @@ export default function StripeCard({ amount, onSuccess, user }) {
                 buttonsStyling: false,
             });
         } else if (result.paymentIntent.status === 'succeeded') {
-            
-           
+            Swal.fire({
+                title: 'Pago completado',
+                text: 'Tu pago se ha realizado correctamente.',
+                icon: 'success',
+                confirmButtonText: 'Continuar',
+                customClass: {
+                    popup: 'rounded-xl shadow-lg',
+                    confirmButton: 'bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700',
+                },
+                buttonsStyling: false,
+            }).then(() => {
                 onSuccess(result.paymentIntent);
-            
+            });
         }
     };
 
