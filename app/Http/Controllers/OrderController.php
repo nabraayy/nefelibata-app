@@ -67,7 +67,8 @@ class OrderController extends Controller
 
         Session::forget('cart');
 
-        return redirect()->back()->with('success', 'Pedido realizado correctamente.');
+        return Inertia::location(route('orders.index'));
+
 
     }
     public function paypalComplete(Request $request)
@@ -98,7 +99,8 @@ class OrderController extends Controller
 
     Session::forget('cart');
 
-    return redirect()->route('order.confirmed');
+   return Inertia::location(route('order.confirmed'));
+
 }
 public function updateStatus(Request $request, Order $order)
 {

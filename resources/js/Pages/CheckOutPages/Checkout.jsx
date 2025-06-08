@@ -75,6 +75,7 @@ export default function Checkout() {
             ...form,
             cart: orderItems,
             total: totalPrice,
+            
         }, {
             onSuccess: () => {
                 Swal.fire({
