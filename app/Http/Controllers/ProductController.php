@@ -31,6 +31,8 @@ class ProductController extends Controller
                 'price' => 'required|numeric',
                 'image' => 'required|string',
                 'category' => 'required|string|max:255',
+                'description'=>'nullable|string',
+                'gallery'=>'nullable|array',
                  'discount' => 'nullable|integer|min:0|max:100',
             ]);
 
